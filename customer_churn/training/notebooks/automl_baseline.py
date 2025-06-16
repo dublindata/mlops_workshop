@@ -145,7 +145,7 @@ model_timeout_minutes = int(dbutils.widgets.get("model_timeout_minutes"))
 advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 avg_price_increase = dbutils.widgets.get("avg_price_increase")
-experiment_name = dbutils.widgets.get("experiment_name") + "_" + str(uuid.uuid4())
+experiment_name = dbutils.widgets.get("experiment_name") + "_" + str(uuid.uuid4()).replace("-", "_")
 model_name = dbutils.widgets.get("model_name")
 # features_from_registered_automl_model = dbutils.widgets.get("features_from_registered_automl_model")
 
