@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  Confgure-And-Deploy:
+  Configure-And-Deploy:
     runs-on: [self-hosted, databricks-cli]
     steps:
       - name: Change Directory
-        run: cd customer_churn
+        run: cd ./customer_churn
       - name: Deploy Bundle
         env:
           DATABRICKS_HOST: ${{ secrets.databricks_host }}
