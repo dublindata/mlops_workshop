@@ -8,17 +8,22 @@ resources:
             op: EQUAL_TO
             left: "{{job.parameters.first_run}}"
             right: "true"
+
         - task_key: data_preparation
           run_job_task:
             job_id: ${resources.jobs.data_preparation.id}
           depends_on:
             - task_key: first_run_conditional
               outcome: "true"
+          job_cluster_key: ml_cluster
+
         - task_key: auto_ml
           run_job_task:
             job_id: ${resources.jobs.auto_ml_baseline.id}
           depends_on:
             - task_key: data_preparation
+          job_cluster_key: ml_cluster
+
         - task_key: custom_ml
           run_job_task:
             job_id: ${resources.jobs.custom_ml.id}
@@ -27,6 +32,27 @@ resources:
             - task_key: first_run_conditional
               outcome: "false"
           run_if: AT_LEAST_ONE_SUCCESS
+          job_cluster_key: ml_cluster
+
+
+
+      job_clusters:
+        - job_cluster_key: ml_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              availability: ON_DEMAND
+            node_type_id: rd-fleet.xlarge
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: PHOTON
+            kind: CLASSIC_PREVIEW
+            use_ml_runtime: true
+            is_single_node: false
+            autoscale:
+              min_workers: 2
+              max_workers: 8
             
           
       queue:
