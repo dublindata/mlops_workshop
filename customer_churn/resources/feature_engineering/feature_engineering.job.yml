@@ -36,14 +36,14 @@ resources:
         enabled: true
       parameters:
         - name: bronze_table_name
-          default: main.dbdemos_mlops.advanced_churn_bronze_customers
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
         - name: inference_table_name
-          default: mgiglia.main.advanced_churn_inference_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_inference_table
         - name: input_table_name
-          default: main.dbdemos_mlops.advanced_churn_bronze_customers
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
         - name: advanced_churn_label_table
-          default: mgiglia.main.advanced_churn_label_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_label_table
         - name: advanced_churn_feature_table
-          default: mgiglia.main.advanced_churn_feature_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
         - name: avg_price_increase
           default: mgiglia.main.advanced_churn_feature_table

@@ -75,12 +75,7 @@ assert input_table_name != "", "input_table_path notebook parameter must be spec
 assert advanced_churn_feature_table != "", "output_table_name notebook parameter must be specified"
 
 # Extract database name. Needs to be updated for Unity Catalog to the Schema name.
-output_catalog = advanced_churn_feature_table.split(".")[0]
 output_database = advanced_churn_feature_table.split(".")[1]
-
-# COMMAND ----------
-
-print(output_catalog)
 
 # COMMAND ----------
 
