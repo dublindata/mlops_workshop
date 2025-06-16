@@ -9,6 +9,7 @@ jobs:
   Configure-And-Deploy:
     runs-on: [self-hosted, databricks-cli]
     steps:
+      - uses: actions/checkout@v4
       - name: Change Directory
         run: pwd; ls
       - name: Deploy Bundle
