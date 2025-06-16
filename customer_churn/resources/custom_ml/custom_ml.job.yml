@@ -15,7 +15,7 @@ resources:
           depends_on:
             - task_key: train_model
           job_cluster_key: training_cluster
-        - task_key: validation
+        - task_key: challenger_champion
           notebook_task:
             notebook_path: ../../validation/notebooks/challenger_champion.py
             source: WORKSPACE
