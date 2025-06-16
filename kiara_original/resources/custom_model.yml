@@ -1,0 +1,76 @@
+new_cluster: &new_cluster
+  new_cluster:
+    num_workers: 3
+    spark_version: 15.3.x-cpu-ml-scala2.12
+    node_type_id: Standard_D3_v2
+    data_security_mode: "SINGLE_USER"
+    custom_tags:
+      clusterSource: mlops-stacks_0.4
+
+common_permissions: &permissions
+  permissions:
+    - level: CAN_VIEW
+      group_name: users
+
+resources:
+  jobs:
+    run_custom_model:
+      name: custom_model_job
+      job_clusters:
+        - job_cluster_key: custom_model_job_cluster
+          <<: *new_cluster
+      tasks:
+        - task_key: TrainCustomModel
+          job_cluster_key: custom_model_job_cluster
+          notebook_task:
+            notebook_path: ../training/notebooks/custom_model_training.ipynb
+            base_parameters:
+              # TODO modify these arguments to reflect your setup.
+              advanced_churn_label_table: ${var.catalog_name}.${var.schema_name}.advanced_churn_label_table
+              advanced_churn_feature_table: ${var.catalog_name}.${var.schema_name}.advanced_churn_feature_table
+              avg_price_increase: ${var.catalog_name}.${var.schema_name}.advanced_churn_feature_table
+              experiment_name: ${var.experiment_name}
+              model_name: ${var.catalog_name}.${var.schema_name}.${var.model_name}
+              # git source information of current ML resource deployment. It will be persisted as part of the workflow run
+              git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}
+        - task_key: ValidateCustomModel
+          job_cluster_key: custom_model_job_cluster
+          depends_on:
+            - task_key: TrainCustomModel
+          notebook_task:
+            notebook_path: ../validation/notebooks/validation.ipynb
+            base_parameters:
+              # TODO modify these arguments to reflect your setup.
+              advanced_churn_label_table: ${var.catalog_name}.${var.schema_name}.advanced_churn_label_table
+              advanced_churn_feature_table: ${var.catalog_name}.${var.schema_name}.advanced_churn_feature_table
+              avg_price_increase: ${var.catalog_name}.${var.schema_name}.advanced_churn_feature_table
+              experiment_name: ${var.experiment_name}
+              model_name: ${var.catalog_name}.${var.schema_name}.${var.model_name}
+              targets: churn
+              model_alias: challenger
+              model_info_table: ${var.catalog_name}.${var.schema_name}.model_info_table
+              # git source information of current ML resource deployment. It will be persisted as part of the workflow run
+              git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}
+        - task_key: ChallengerChampionAlias
+          job_cluster_key: custom_model_job_cluster
+          depends_on:
+            - task_key: ValidateCustomModel
+          notebook_task:
+            notebook_path: ../validation/notebooks/challenger_champion.ipynb
+            base_parameters:
+              # TODO modify these arguments to reflect your setup.
+              model_name: ${var.catalog_name}.${var.schema_name}.${var.model_name}
+              model_info_table: ${var.catalog_name}.${var.schema_name}.model_info_table
+              # git source information of current ML resource deployment. It will be persisted as part of the workflow run
+              git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}       
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?" # daily at 7am
+        timezone_id: UTC
+      <<: *permissions
+      # If you want to turn on notifications for this job, please uncomment the below code,
+      # and provide a list of emails to the on_failure argument.
+      #
+      #  email_notifications:
+      #    on_failure:
+      #      - first@company.com
+      #      - second@company.com
