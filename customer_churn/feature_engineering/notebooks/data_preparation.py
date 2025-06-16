@@ -29,30 +29,46 @@ import pyspark.sql.functions as F
 
 # COMMAND ----------
 
+dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
+dbutils.widgets.text("schema_use", "main", label="Schema to Use")
+
+# COMMAND ----------
+
+catalog_use = dbutils.widgets.get("catalog_use")
+schema_use = dbutils.widgets.get("schema_use")
+spark.sql(f"USE {catalog_use}.{schema_use}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select current_catalog(), current_schema();
+
+# COMMAND ----------
+
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
     "input_table_name",
-    "main.dbdemos_mlops.advanced_churn_bronze_customers",
+    f"{catalog_use}.{schema_use}.advanced_churn_bronze_customers",
     label="Input Table Name",
 )
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
-    "dev.koeppen_dabs_demo.advanced_churn_label_table",
+    f"{catalog_use}.{schema_use}.advanced_churn_label_table",
     label="Label Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_feature_table",
-    "dev.koeppen_dabs_demo.advanced_churn_feature_table",
+    f"{catalog_use}.{schema_use}.advanced_churn_feature_table",
     label="Feature Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "avg_price_increase",
-    "dev.koeppen_dabs_demo.avg_price_increase",
+    f"{catalog_use}.{schema_use}.avg_price_increase",
     label="Avg Price Increase Function",
 )
 
@@ -75,30 +91,39 @@ assert input_table_name != "", "input_table_path notebook parameter must be spec
 assert advanced_churn_feature_table != "", "output_table_name notebook parameter must be specified"
 
 # Extract database name. Needs to be updated for Unity Catalog to the Schema name.
-output_catalog = advanced_churn_feature_table.split(".")[0]
-output_database = advanced_churn_feature_table.split(".")[1]
+# output_catalog = advanced_churn_feature_table.split(".")[0]
+# output_database = advanced_churn_feature_table.split(".")[1]
 
 # COMMAND ----------
 
-print(output_catalog)
+print(f""" 
+  input_table_name = {input_table_name}
+  advanced_churn_label_table = {advanced_churn_label_table}
+  advanced_churn_feature_table = {advanced_churn_feature_table}
+  avg_price_increase = {avg_price_increase}
+""")
 
 # COMMAND ----------
 
-print(output_database)
+# print(output_catalog)
 
 # COMMAND ----------
 
-spark.sql(f"USE CATALOG {output_catalog}")
+# print(output_database)
+
+# COMMAND ----------
+
+# spark.sql(f"USE CATALOG {output_catalog}")
 
 # COMMAND ----------
 
 # DBTITLE 1,Making sure that we have a schema to land our data in
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {output_database}")
+# spark.sql(f"CREATE SCHEMA IF NOT EXISTS {output_database}")
 
 # COMMAND ----------
 
-spark.sql(f"USE {output_catalog}.{output_database}")
-display(spark.sql("SELECT current_catalog(), current_schema()"))
+# spark.sql(f"USE {output_catalog}.{output_database}")
+# display(spark.sql("SELECT current_catalog(), current_schema()"))
 
 # COMMAND ----------
 
