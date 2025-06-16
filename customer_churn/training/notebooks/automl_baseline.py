@@ -72,24 +72,29 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 
 # COMMAND ----------
 
+dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
+dbutils.widgets.text("schema_use", "main", label="Schema to Use")
+
+# COMMAND ----------
+
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
-    "dev.koeppen_dabs_demo.advanced_churn_label_table",
+    "advanced_churn_label_table",
     label="Label Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_feature_table",
-    "dev.koeppen_dabs_demo.advanced_churn_feature_table",
+    "advanced_churn_feature_table",
     label="Feature Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "avg_price_increase",
-    "dev.koeppen_dabs_demo.avg_price_increase",
+    "avg_price_increase",
     label="Avg Price Increase Function",
 )
 
@@ -103,20 +108,31 @@ dbutils.widgets.text(
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
-    "dev.koeppen_dabs_demo.advanced_mlops_churn_model",
+    "advanced_mlops_churn_model",
     label="Model Name",
 )
 
-# Feature table to store the computed features.
-dbutils.widgets.text(
-    "features_from_registered_automl_model",
-    "dev.koeppen_dabs_demo.features_from_registered_automl_model",
-    label="features_from_registered_automl_model",
-)
+# # Feature table to store the computed features.
+# dbutils.widgets.text(
+#     "features_from_registered_automl_model",
+#     "dev.koeppen_dabs_demo.features_from_registered_automl_model",
+#     label="features_from_registered_automl_model",
+# )
 
 # COMMAND ----------
 
-advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
+catalog_use = dbutils.widgets.get("catalog_use")
+schema_use = dbutils.widgets.get("schema_use")
+spark.sql(f"USE {catalog_use}.{schema_use}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select current_catalog(), current_schema();
+
+# COMMAND ----------
+
+advanced_churn_label_table = "advanced_churn_label_table"
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 avg_price_increase = dbutils.widgets.get("avg_price_increase")
 experiment_name = dbutils.widgets.get("experiment_name")
@@ -125,10 +141,10 @@ features_from_registered_automl_model = dbutils.widgets.get("features_from_regis
 
 # COMMAND ----------
 
-output_schema = advanced_churn_feature_table.split(".")[0]
-output_database = advanced_churn_feature_table.split(".")[1]
-spark.sql(f"USE CATALOG {output_schema}");
-spark.sql(f"USE SCHEMA {output_database}")
+# output_schema = advanced_churn_feature_table.split(".")[0]
+# output_database = advanced_churn_feature_table.split(".")[1]
+# spark.sql(f"USE CATALOG {output_schema}");
+# spark.sql(f"USE SCHEMA {output_database}")
 
 # COMMAND ----------
 
@@ -321,7 +337,3 @@ client.set_model_version_tag(
 # COMMAND ----------
 
 dbutils.notebook.exit(0)
-
-# COMMAND ----------
-
-
