@@ -67,13 +67,11 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
       model_timeout_minutes: 15
-      run_as_user: matthew.giglia@databricks.com
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
-      host: https://e2-demo-field-eng.cloud.databricks.com
-      # We always use /Users/matthew.giglia@databricks.com for all resources to make sure we only have a single copy.
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      # This runs as matthew.giglia@databricks.com in production. We could also use a service principal here,
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
 
@@ -93,13 +91,11 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
       model_timeout_minutes: 15
-      run_as_user: matthew.giglia@databricks.com
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
-      host: https://e2-demo-field-eng.cloud.databricks.com
-      # We always use /Users/matthew.giglia@databricks.com for all resources to make sure we only have a single copy.
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      # This runs as matthew.giglia@databricks.com in production. We could also use a service principal here,
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
 
@@ -119,13 +115,11 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
       model_timeout_minutes: 120
-      run_as_user: matthew.giglia@databricks.com
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
-      host: https://e2-demo-field-eng.cloud.databricks.com
-      # We always use /Users/matthew.giglia@databricks.com for all resources to make sure we only have a single copy.
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      # This runs as matthew.giglia@databricks.com in production. We could also use a service principal here,
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
 
@@ -146,13 +140,11 @@ targets:
       catalog_use: datascience
       schema_use: kiara_koeppen
       model_timeout_minutes: 120
-      run_as_user: matthew.giglia@databricks.com
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
-      host: https://e2-demo-field-eng.cloud.databricks.com
-      # We always use /Users/matthew.giglia@databricks.com for all resources to make sure we only have a single copy.
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
     run_as:
-      # This runs as matthew.giglia@databricks.com in production. We could also use a service principal here,
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
 
