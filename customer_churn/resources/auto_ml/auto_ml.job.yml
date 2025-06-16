@@ -8,6 +8,13 @@ resources:
             notebook_path: ../../training/notebooks/automl_baseline.py
             source: WORKSPACE
           job_cluster_key: training_cluster
+        - task_key: baseline_validation
+          notebook_task:
+            notebook_path: ../../validataion/notebooks/validation.py
+            source: WORKSPACE
+            depends_on:
+              - task_key: baseline_model
+          job_cluster_key: training_cluster
       job_clusters:
         - job_cluster_key: training_cluster
           new_cluster:
