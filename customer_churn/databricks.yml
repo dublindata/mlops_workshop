@@ -78,7 +78,7 @@ targets:
   tst:
     mode: production
     presets:
-      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
+      name_prefix: '[${bundle.target} ${var.schmea_use}] ' 
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -107,7 +107,7 @@ targets:
   uat:
     mode: production
     presets:
-      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
+      name_prefix: '[${bundle.target} ${var.schmea_use}] ' 
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -137,7 +137,7 @@ targets:
   prod:
     mode: production
     presets:
-      name_prefix: '[${bundle.target} ${var.run_as_user}] ' # normally prefix is not set for production job names, for the MLOps Workshop, if deployment to prod is expected we need to set this so that no two students overwrite each other.  
+      name_prefix: '[${bundle.target} ${var.schmea_use}] ' # normally prefix is not set for production job names, for the MLOps Workshop, if deployment to prod is expected we need to set this so that no two students overwrite each other.  
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
