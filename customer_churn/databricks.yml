@@ -65,7 +65,7 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience_${bundle.target}
-      schema_use: kiara_koeppen
+      schema_use: odl_instructor_1452233
       model_timeout_minutes: 15
       run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
@@ -89,9 +89,9 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience_${bundle.target}
-      schema_use: kiara_koeppen
+      schema_use: odl_instructor_1452233
       model_timeout_minutes: 15
-      run_as_user: odl_instructor_1452233@databrickslabs.com
+      run_as_user: odl_instructor_1766475@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
@@ -113,9 +113,9 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience_${bundle.target}
-      schema_use: kiara_koeppen
+      schema_use: odl_instructor_1452233
       model_timeout_minutes: 120
-      run_as_user: odl_instructor_1452233@databrickslabs.com
+      run_as_user: odl_instructor_1766475@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
@@ -138,9 +138,9 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience
-      schema_use: kiara_koeppen
+      schema_use: odl_instructor_1452233
       model_timeout_minutes: 120
-      run_as_user: odl_instructor_1452233@databrickslabs.com
+      run_as_user: odl_instructor_1766475@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
