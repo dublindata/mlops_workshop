@@ -49,33 +49,17 @@
 
 # COMMAND ----------
 
-dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
-dbutils.widgets.text("schema_use", "main", label="Schema to Use")
-
-# COMMAND ----------
-
-catalog_use = dbutils.widgets.get("catalog_use")
-schema_use = dbutils.widgets.get("schema_use")
-spark.sql(f"USE {catalog_use}.{schema_use}")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select current_catalog(), current_schema();
-
-# COMMAND ----------
-
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
-    f"{catalog_use}.{schema_use}.advanced_mlops_churn_model",
+    "dev.koeppen_dabs_demo.advanced_mlops_churn_model",
     label="Model Name",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_info_table",
-    f"{catalog_use}.{schema_use}.model_info_table",
+    "dev.koeppen_dabs_demo.model_info_table",
     label="model_info_table",
 )
 
@@ -84,13 +68,6 @@ dbutils.widgets.text(
 
 model_info_table = dbutils.widgets.get("model_info_table")
 model_name = dbutils.widgets.get("model_name")
-
-# COMMAND ----------
-
-print(f""" 
-  model_info_table: {model_info_table}
-  model_name: {model_name}
-""")
 
 # COMMAND ----------
 
@@ -150,8 +127,6 @@ if str(new_champion.model_version) != str(champion_version):
     client.set_registered_model_alias(model_name, version=champion_version, alias="prior_champion")
     client.set_model_version_tag(model_name, champion_version, "status", "demoted_to_prior_champion")
     client.set_model_version_tag(model_name, champion_version, "demoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    client.set_model_version_tag(model_name, challenger_version, "status", "promoted_to_champion")
-    client.set_model_version_tag(model_name, challenger_version, "promoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(f"Demoted v{champion_version} to prior_champion")
 
 
@@ -159,6 +134,9 @@ if str(new_champion.model_version) != str(champion_version):
 client.set_registered_model_alias(model_name, version=new_champion.model_version, alias="champion")
 client.set_registered_model_alias(model_name, version=new_challenger.model_version, alias="challenger")
 
+# Set tags
+client.set_model_version_tag(model_name, challenger_version, "status", "promoted_to_champion")
+client.set_model_version_tag(model_name, challenger_version, "promoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 # We can also tag the model version with the F1 score for visibility
 print(f"Champion: v{new_champion.model_version} (F1 = {new_champion.f1_score})")
 print(f"Challenger: v{new_challenger.model_version} (F1 = {new_challenger.f1_score})")

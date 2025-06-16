@@ -7,16 +7,16 @@ resources:
           notebook_task:
             notebook_path: ../../feature_engineering/notebooks/requirements.py
             source: WORKSPACE
-          job_cluster_key: training_cluster
+          job_cluster_key: data_prep_cluster
         - task_key: data_preparation
           depends_on:
             - task_key: requirements
           notebook_task:
             notebook_path: ../../feature_engineering/notebooks/data_preparation.py
             source: WORKSPACE
-          job_cluster_key: training_cluster
+          job_cluster_key: data_prep_cluster
       job_clusters:
-        - job_cluster_key: training_cluster
+        - job_cluster_key: data_prep_cluster
           new_cluster:
             spark_version: 15.4.x-scala2.12
             aws_attributes:

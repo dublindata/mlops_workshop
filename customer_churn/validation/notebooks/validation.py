@@ -42,22 +42,6 @@
 
 # COMMAND ----------
 
-dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
-dbutils.widgets.text("schema_use", "main", label="Schema to Use")
-
-# COMMAND ----------
-
-catalog_use = dbutils.widgets.get("catalog_use")
-schema_use = dbutils.widgets.get("schema_use")
-spark.sql(f"USE {catalog_use}.{schema_use}")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select current_catalog(), current_schema();
-
-# COMMAND ----------
-
 # MLflow experiment name.
 dbutils.widgets.text(
     "experiment_name",
@@ -68,7 +52,7 @@ dbutils.widgets.text(
 # Unity Catalog registered model name to use for the trained mode.
 dbutils.widgets.text(
     "model_name", 
-    f"{catalog_use}.{schema_use}.advanced_mlops_churn_model", 
+    "dev.koeppen_dabs_demo.advanced_mlops_churn_model", 
     label="Full (Three-Level) Model Name"
 )
 
@@ -76,41 +60,41 @@ dbutils.widgets.text(
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
-    f"{catalog_use}.{schema_use}.advanced_churn_label_table",
+    "dev.koeppen_dabs_demo.advanced_churn_label_table",
     label="Label Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_feature_table",
-    f"{catalog_use}.{schema_use}.advanced_churn_feature_table",
+    "dev.koeppen_dabs_demo.advanced_churn_feature_table",
     label="Feature Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "avg_price_increase",
-    f"{catalog_use}.{schema_use}.avg_price_increase",
+    "dev.koeppen_dabs_demo.avg_price_increase",
     label="Avg Price Increase Function",
 )
 
 # Feature table to store the computed features.
-dbutils.widgets.dropdown(
+dbutils.widgets.text(
     "model_alias",
-    "champion",
-    ["challenger", "champion", "prior_champion"],
-    label="Model Alias"
+    "challenger",
+    label="Model Alias",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_info_table",
-    f"{catalog_use}.{schema_use}.model_info_table",
+    "dev.koeppen_dabs_demo.model_info_table",
     label="Model Information Table",
 )
 
 # COMMAND ----------
 
+from mlflow.tracking import MlflowClient
 advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 experiment_name = dbutils.widgets.get("experiment_name")
@@ -121,31 +105,15 @@ model_info_table=dbutils.widgets.get("model_info_table")
 
 # COMMAND ----------
 
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
-
-# COMMAND ----------
-
-print(f""" 
-  advanced_churn_label_table: {advanced_churn_label_table}
-  advanced_churn_feature_table: {advanced_churn_feature_table}
-  avg_price_increase: {avg_price_increase}
-  experiment_name: {experiment_name}
-  model_name: {model_name}
-  model_alias: {model_alias}
-  model_info_table: {model_info_table}
-""")
+output_schema = advanced_churn_feature_table.split(".")[0]
+output_database = advanced_churn_feature_table.split(".")[1]
+spark.sql(f"USE CATALOG {output_schema}");
+spark.sql(f"USE SCHEMA {output_database}")
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC # Getting Model Information based on which Alias we're wanting to Validate
-
-# COMMAND ----------
-
-from mlflow.tracking import MlflowClient
 
 # COMMAND ----------
 

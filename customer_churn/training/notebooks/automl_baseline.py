@@ -72,100 +72,63 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 
 # COMMAND ----------
 
-dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
-dbutils.widgets.text("schema_use", "main", label="Schema to Use")
-dbutils.widgets.text("model_timeout_minutes", "5", label="Model Timeout Minutes")
-
-# COMMAND ----------
-
-catalog_use = dbutils.widgets.get("catalog_use")
-schema_use = dbutils.widgets.get("schema_use")
-spark.sql(f"USE {catalog_use}.{schema_use}")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select current_catalog(), current_schema();
-
-# COMMAND ----------
-
-# dbutils.widgets.removeAll()
-
-# COMMAND ----------
-
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
-    f"{catalog_use}.{schema_use}.advanced_churn_label_table",
+    "dev.koeppen_dabs_demo.advanced_churn_label_table",
     label="Label Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_feature_table",
-    f"{catalog_use}.{schema_use}.advanced_churn_feature_table",
+    "dev.koeppen_dabs_demo.advanced_churn_feature_table",
     label="Feature Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "avg_price_increase",
-    f"{catalog_use}.{schema_use}.avg_price_increase",
+    "dev.koeppen_dabs_demo.avg_price_increase",
     label="Avg Price Increase Function",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "experiment_name",
-    f"{catalog_use}.{schema_use}.advanced_mlops_churn_experiment",
+    "advanced_mlops_churn_experiment",
     label="Experiment Name",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
-    f"{catalog_use}.{schema_use}.advanced_mlops_churn_model",
+    "dev.koeppen_dabs_demo.advanced_mlops_churn_model",
     label="Model Name",
 )
 
-# # Feature table to store the computed features.
-# dbutils.widgets.text(
-#     "features_from_registered_automl_model",
-#     "dev.koeppen_dabs_demo.features_from_registered_automl_model",
-#     label="features_from_registered_automl_model",
-# )
+# Feature table to store the computed features.
+dbutils.widgets.text(
+    "features_from_registered_automl_model",
+    "dev.koeppen_dabs_demo.features_from_registered_automl_model",
+    label="features_from_registered_automl_model",
+)
 
 # COMMAND ----------
 
-import uuid
-
-# COMMAND ----------
-
-model_timeout_minutes = int(dbutils.widgets.get("model_timeout_minutes"))
 advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 avg_price_increase = dbutils.widgets.get("avg_price_increase")
-experiment_name = dbutils.widgets.get("experiment_name") + "_" + str(uuid.uuid4()).replace("-", "_")
+experiment_name = dbutils.widgets.get("experiment_name")
 model_name = dbutils.widgets.get("model_name")
-# features_from_registered_automl_model = dbutils.widgets.get("features_from_registered_automl_model")
+features_from_registered_automl_model = dbutils.widgets.get("features_from_registered_automl_model")
 
 # COMMAND ----------
 
-print(f""" 
-  model_timeout_minutes: {model_timeout_minutes}
-  advanced_churn_label_table: {advanced_churn_label_table}
-  advanced_churn_feature_table: {advanced_churn_feature_table}
-  avg_price_increase: {avg_price_increase}
-  experiment_name: {experiment_name}
-  model_name: {model_name}
-""")
-
-# COMMAND ----------
-
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
+output_schema = advanced_churn_feature_table.split(".")[0]
+output_database = advanced_churn_feature_table.split(".")[1]
+spark.sql(f"USE CATALOG {output_schema}");
+spark.sql(f"USE SCHEMA {output_database}")
 
 # COMMAND ----------
 
@@ -188,7 +151,7 @@ from databricks.feature_store import FeatureFunction, FeatureLookup
 
 feature_lookups = [
     FeatureLookup(
-      table_name=advanced_churn_feature_table,
+      table_name= advanced_churn_feature_table,
       lookup_key=["customer_id"],
       timestamp_lookup_key="transaction_ts"
     ),
@@ -215,6 +178,7 @@ training_set_specs = fe.create_training_set(
   exclude_columns=["customer_id", "transaction_ts", 'split']
 )
 training_df = training_set_specs.load_df()
+
 
 # COMMAND ----------
 
@@ -243,7 +207,7 @@ def start_automl_run(dataset, target_col, experiment_name=None, timeout_minutes=
 automl_result = start_automl_run(
     dataset=training_df,         
     target_col="churn",
-    timeout_minutes=model_timeout_minutes,
+    timeout_minutes=15,
     experiment_name=experiment_name
 )
 best_model_uri = automl_result.best_trial.model_path
@@ -357,3 +321,7 @@ client.set_model_version_tag(
 # COMMAND ----------
 
 dbutils.notebook.exit(0)
+
+# COMMAND ----------
+
+
