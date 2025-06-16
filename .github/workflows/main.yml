@@ -10,7 +10,7 @@ jobs:
     runs-on: [self-hosted, databricks-cli]
     steps:
       - name: Change Directory
-        run: cd ./customer_churn
+        run: ls
       - name: Deploy Bundle
         env:
           DATABRICKS_HOST: ${{ secrets.databricks_host }}
