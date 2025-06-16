@@ -27,7 +27,7 @@ variables:
 
 targets:
   # The 'dev' target, for development purposes. This target is the default.
-  dev:
+  workshop_dev:
     mode: development
     presets:
       # name_prefix: '[dev ${var.run_as_user}]' 
@@ -41,9 +41,35 @@ targets:
         removeAfter: 20251231
     default: true
     variables:
-      catalog_use: datascience_${bundle.target}
+      catalog_use: mgiglia
+      schema_use: main
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
+
+  dev:
+    mode: development
+    presets:
+      # name_prefix: '[dev ${var.run_as_user}]' 
+      pipelines_development: true # set development to true for pipelines
+      trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: kiara_koeppen
+        removeAfter: 20251231
+    variables:
+      catalog_use: datascience_${bundle.target}
+      schema_use: kiara_koeppen
+      run_as_user: matthew.giglia@databricks.com
+    workspace:
+      host: https://e2-demo-field-eng.cloud.databricks.com
+      # We always use /Users/matthew.giglia@databricks.com for all resources to make sure we only have a single copy.
+      root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # This runs as matthew.giglia@databricks.com in production. We could also use a service principal here,
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ${var.run_as_user}
 
   tst:
     mode: production
@@ -59,6 +85,7 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience_${bundle.target}
+      schema_use: kiara_koeppen
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -83,6 +110,7 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience_${bundle.target}
+      schema_use: kiara_koeppen
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -108,6 +136,7 @@ targets:
         removeAfter: 20251231
     variables:
       catalog_use: datascience
+      schema_use: kiara_koeppen
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
