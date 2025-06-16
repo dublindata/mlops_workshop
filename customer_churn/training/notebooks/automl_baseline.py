@@ -132,7 +132,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
-advanced_churn_label_table = "advanced_churn_label_table"
+advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 avg_price_increase = dbutils.widgets.get("avg_price_increase")
 experiment_name = dbutils.widgets.get("experiment_name")
