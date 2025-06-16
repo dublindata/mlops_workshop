@@ -49,6 +49,22 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
+dbutils.widgets.text("schema_use", "main", label="Schema to Use")
+
+# COMMAND ----------
+
+catalog_use = dbutils.widgets.get("catalog_use")
+schema_use = dbutils.widgets.get("schema_use")
+spark.sql(f"USE {catalog_use}.{schema_use}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select current_catalog(), current_schema();
+
+# COMMAND ----------
+
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
@@ -68,6 +84,13 @@ dbutils.widgets.text(
 
 model_info_table = dbutils.widgets.get("model_info_table")
 model_name = dbutils.widgets.get("model_name")
+
+# COMMAND ----------
+
+print(f""" 
+  model_info_table: {model_info_table}
+  model_name: {model_name}
+""")
 
 # COMMAND ----------
 
