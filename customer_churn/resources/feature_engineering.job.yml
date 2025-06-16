@@ -1,0 +1,49 @@
+resources:
+  jobs:
+    customer_churn_feature_engineering:
+      name: customer churn feature engineering
+      tasks:
+        - task_key: requirements
+          notebook_task:
+            notebook_path: ../feature_engineering/notebooks/requirements.py
+            source: WORKSPACE
+          job_cluster_key: customer_churn_ml_cluster
+        - task_key: data_preparation
+          depends_on:
+            - task_key: requirements
+          notebook_task:
+            notebook_path: ../feature_engineering/notebooks/data_preparation.py
+            source: WORKSPACE
+          job_cluster_key: customer_churn_ml_cluster
+      job_clusters:
+        - job_cluster_key: customer_churn_ml_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              availability: ON_DEMAND
+            node_type_id: rd-fleet.xlarge
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: PHOTON
+            kind: CLASSIC_PREVIEW
+            use_ml_runtime: true
+            is_single_node: false
+            autoscale:
+              min_workers: 2
+              max_workers: 8
+      queue:
+        enabled: true
+      parameters:
+        - name: bronze_table_name
+          default: main.dbdemos_mlops.advanced_churn_bronze_customers
+        - name: inference_table_name
+          default: mgiglia.main.advanced_churn_inference_table
+        - name: input_table_name
+          default: main.dbdemos_mlops.advanced_churn_bronze_customers
+        - name: advanced_churn_label_table
+          default: mgiglia.main.advanced_churn_label_table
+        - name: advanced_churn_feature_table
+          default: mgiglia.main.advanced_churn_feature_table
+        - name: avg_price_increase
+          default: mgiglia.main.advanced_churn_feature_table
