@@ -34,7 +34,12 @@ dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
 catalog_use = dbutils.widgets.get("catalog_use")
 schema_use = dbutils.widgets.get("schema_use")
+
+# COMMAND ----------
+
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema_use}")
 spark.sql(f"USE {catalog_use}.{schema_use}")
+# print(output_database)
 
 # COMMAND ----------
 
@@ -95,14 +100,9 @@ if not spark.catalog.tableExists(bronze_table_name):
 
 # COMMAND ----------
 
-output_catalog = inference_table_name.split(".")[0]
-output_database = inference_table_name.split(".")[1]
-spark.sql(f"USE CATALOG {output_catalog}")
-
-# COMMAND ----------
-
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {output_database}")
-print(output_database)
+# output_catalog = inference_table_name.split(".")[0]
+# output_database = inference_table_name.split(".")[1]
+# spark.sql(f"USE CATALOG {output_catalog}")
 
 # COMMAND ----------
 
