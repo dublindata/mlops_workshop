@@ -98,6 +98,11 @@ targets:
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
 
   uat:
     mode: production
@@ -122,6 +127,11 @@ targets:
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
 
   # The 'prod' target, used for production deployment.
   prod:
@@ -147,4 +157,9 @@ targets:
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
 
