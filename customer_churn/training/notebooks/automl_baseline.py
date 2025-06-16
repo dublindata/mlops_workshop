@@ -74,6 +74,7 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
+dbutils.widgets.text("model_timeout_minutes", "5", label="Model Timeout Minutes")
 
 # COMMAND ----------
 
@@ -132,12 +133,24 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+model_timeout_minutes = int(dbutils.widgets.get("model_timeout_minutes"))
 advanced_churn_label_table = dbutils.widgets.get("advanced_churn_label_table")
 advanced_churn_feature_table = dbutils.widgets.get("advanced_churn_feature_table")
 avg_price_increase = dbutils.widgets.get("avg_price_increase")
 experiment_name = dbutils.widgets.get("experiment_name")
 model_name = dbutils.widgets.get("model_name")
-features_from_registered_automl_model = dbutils.widgets.get("features_from_registered_automl_model")
+# features_from_registered_automl_model = dbutils.widgets.get("features_from_registered_automl_model")
+
+# COMMAND ----------
+
+print(f""" 
+  model_timeout_minutes: {model_timeout_minutes}
+  advanced_churn_label_table: {advanced_churn_label_table}
+  advanced_churn_feature_table: {advanced_churn_feature_table}
+  avg_price_increase: {avg_price_increase}
+  experiment_name: {experiment_name}
+  model_name: {model_name}
+""")
 
 # COMMAND ----------
 
@@ -223,7 +236,7 @@ def start_automl_run(dataset, target_col, experiment_name=None, timeout_minutes=
 automl_result = start_automl_run(
     dataset=training_df,         
     target_col="churn",
-    timeout_minutes=15,
+    timeout_minutes=model_timeout_minutes,
     experiment_name=experiment_name
 )
 best_model_uri = automl_result.best_trial.model_path
