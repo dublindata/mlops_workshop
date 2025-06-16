@@ -52,14 +52,14 @@
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
-    "dev.koeppen_dabs_demo.advanced_mlops_churn_model",
+    f"{catalog_use}.{schema_use}.advanced_mlops_churn_model",
     label="Model Name",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_info_table",
-    "dev.koeppen_dabs_demo.model_info_table",
+    f"{catalog_use}.{schema_use}.model_info_table",
     label="model_info_table",
 )
 
