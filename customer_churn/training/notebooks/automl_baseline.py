@@ -184,7 +184,7 @@ from databricks.feature_store import FeatureFunction, FeatureLookup
 
 feature_lookups = [
     FeatureLookup(
-      table_name= advanced_churn_feature_table,
+      table_name=advanced_churn_feature_table,
       lookup_key=["customer_id"],
       timestamp_lookup_key="transaction_ts"
     ),
