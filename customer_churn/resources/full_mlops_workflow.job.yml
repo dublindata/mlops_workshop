@@ -9,7 +9,8 @@ resources:
         - task_key: auto_ml
           run_job_task:
             job_id: ${resources.jobs.auto_ml_baseline.id}
-          depends_on: data_preparation
+          depends_on:
+            - task_key: data_preparation
           
       queue:
         enabled: true
