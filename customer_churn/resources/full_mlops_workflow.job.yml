@@ -33,23 +33,23 @@ resources:
 
 
 
-      job_clusters:
-        - job_cluster_key: training_cluster
-          new_cluster:
-            spark_version: 15.4.x-scala2.12
-            aws_attributes:
-              availability: ON_DEMAND
-            node_type_id: rd-fleet.xlarge
-            spark_env_vars:
-              PYSPARK_PYTHON: /databricks/python3/bin/python3
-            data_security_mode: DATA_SECURITY_MODE_DEDICATED
-            runtime_engine: PHOTON
-            kind: CLASSIC_PREVIEW
-            use_ml_runtime: true
-            is_single_node: false
-            autoscale:
-              min_workers: 2
-              max_workers: 8
+      # job_clusters:
+      #   - job_cluster_key: training_cluster
+      #     new_cluster:
+      #       spark_version: 15.4.x-scala2.12
+      #       aws_attributes:
+      #         availability: ON_DEMAND
+      #       node_type_id: rd-fleet.xlarge
+      #       spark_env_vars:
+      #         PYSPARK_PYTHON: /databricks/python3/bin/python3
+      #       data_security_mode: DATA_SECURITY_MODE_DEDICATED
+      #       runtime_engine: PHOTON
+      #       kind: CLASSIC_PREVIEW
+      #       use_ml_runtime: true
+      #       is_single_node: false
+      #       autoscale:
+      #         min_workers: 2
+      #         max_workers: 8
             
           
       queue:
