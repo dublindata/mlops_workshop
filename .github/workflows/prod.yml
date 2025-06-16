@@ -1,9 +1,9 @@
-name: Deploy to Test
+name: Deploy to Production
 run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code!
 on:
   push:
     branches: 
-      - main
+      - prod
 
 jobs:
   Confgire-And-Deploy:
@@ -13,4 +13,4 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.databricks_host }}
           DATABRICKS_PAT: ${{ secrets.databricks_pat }}
-        run: databricks bundle deploy -t tst
+        run: databricks bundle deploy -t prod
