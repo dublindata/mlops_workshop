@@ -1,0 +1,10 @@
+resources:
+  jobs:
+    full_mlops_workflow:
+      name: Customer Churn Full MLOps Workflow
+      tasks:
+        - task_key: data_preparation
+          run_job_task:
+            job_id: ${resources.jobs.data_preparation.id}
+      queue:
+        enabled: true
