@@ -78,38 +78,53 @@ dbutils.widgets.text("model_timeout_minutes", "5", label="Model Timeout Minutes"
 
 # COMMAND ----------
 
+catalog_use = dbutils.widgets.get("catalog_use")
+schema_use = dbutils.widgets.get("schema_use")
+spark.sql(f"USE {catalog_use}.{schema_use}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select current_catalog(), current_schema();
+
+# COMMAND ----------
+
+# dbutils.widgets.removeAll()
+
+# COMMAND ----------
+
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
-    "advanced_churn_label_table",
+    f"{catalog_use}.{schema_use}.advanced_churn_label_table",
     label="Label Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_feature_table",
-    "advanced_churn_feature_table",
+    f"{catalog_use}.{schema_use}.advanced_churn_feature_table",
     label="Feature Table",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "avg_price_increase",
-    "avg_price_increase",
+    f"{catalog_use}.{schema_use}.avg_price_increase",
     label="Avg Price Increase Function",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "experiment_name",
-    "advanced_mlops_churn_experiment",
+    f"{catalog_use}.{schema_use}.advanced_mlops_churn_experiment",
     label="Experiment Name",
 )
 
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "model_name",
-    "advanced_mlops_churn_model",
+    f"{catalog_use}.{schema_use}.advanced_mlops_churn_model",
     label="Model Name",
 )
 
@@ -119,17 +134,6 @@ dbutils.widgets.text(
 #     "dev.koeppen_dabs_demo.features_from_registered_automl_model",
 #     label="features_from_registered_automl_model",
 # )
-
-# COMMAND ----------
-
-catalog_use = dbutils.widgets.get("catalog_use")
-schema_use = dbutils.widgets.get("schema_use")
-spark.sql(f"USE {catalog_use}.{schema_use}")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select current_catalog(), current_schema();
 
 # COMMAND ----------
 
@@ -207,7 +211,6 @@ training_set_specs = fe.create_training_set(
   exclude_columns=["customer_id", "transaction_ts", 'split']
 )
 training_df = training_set_specs.load_df()
-
 
 # COMMAND ----------
 
