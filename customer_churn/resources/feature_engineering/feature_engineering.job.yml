@@ -1,6 +1,6 @@
 resources:
   jobs:
-    customer_churn_feature_engineering:
+    data_preparation:
       name: customer churn feature engineering
       tasks:
         - task_key: requirements
