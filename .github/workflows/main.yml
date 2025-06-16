@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code!
 on: [push]
 jobs:
   Confgire-And-Deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, databricks-cli]
     steps:
       - name: Configure Databricks Authentication
         env:
