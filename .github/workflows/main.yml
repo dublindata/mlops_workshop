@@ -13,5 +13,5 @@ jobs:
       - name: Deploy Bundle
         env:
           DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
-          DATABRICKS_PAT: ${{ secrets.ORG_DATABRICKS_TOKEN }}
+          DATABRICKS_TOKEN: ${{ secrets.ORG_DATABRICKS_TOKEN }}
         run: cd customer_churn; databricks bundle deploy -t tst
