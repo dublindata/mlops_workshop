@@ -1,5 +1,5 @@
 name: Deploy to UAT
-run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code!
+run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code to UAT!
 on:
   push:
     branches: 
@@ -9,8 +9,9 @@ jobs:
   Confgire-And-Deploy:
     runs-on: [self-hosted, databricks-cli]
     steps:
+      - uses: actions/checkout@v4
       - name: Deploy Bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.databricks_host }}
-          DATABRICKS_PAT: ${{ secrets.databricks_pat }}
-        run: databricks bundle deploy -t uat
+          DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.ORG_DATABRICKS_TOKEN }}
+        run: cd customer_churn; databricks bundle deploy -t uat
