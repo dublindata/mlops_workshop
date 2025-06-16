@@ -47,7 +47,7 @@ targets:
     variables:
       catalog_use: mgiglia
       schema_use: main
-      model_timeout_minutes: 5
+      model_timeout_minutes: 15
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
 
@@ -66,7 +66,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
-      model_timeout_minutes: 5
+      model_timeout_minutes: 15
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -92,7 +92,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
-      model_timeout_minutes: 5
+      model_timeout_minutes: 15
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -118,7 +118,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
-      model_timeout_minutes: 20
+      model_timeout_minutes: 120
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -145,7 +145,7 @@ targets:
     variables:
       catalog_use: datascience
       schema_use: kiara_koeppen
-      model_timeout_minutes: 20
+      model_timeout_minutes: 120
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
