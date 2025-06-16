@@ -37,7 +37,7 @@ schema_use = dbutils.widgets.get("schema_use")
 
 # COMMAND ----------
 
-spark.spl(f"use catalog {catalog_use}")
+spark.sql(f"use catalog {catalog_use}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema_use}")
 spark.sql(f"USE {catalog_use}.{schema_use}")
 # print(output_database)
