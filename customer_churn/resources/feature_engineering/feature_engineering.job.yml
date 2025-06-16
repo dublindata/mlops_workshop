@@ -1,7 +1,7 @@
 resources:
   jobs:
     data_preparation:
-      name: customer churn feature engineering
+      name: Feature Engineering - Customer Churn ML Model
       tasks:
         - task_key: requirements
           notebook_task:
