@@ -13,7 +13,7 @@ resources:
             notebook_path: ../../validation/notebooks/validation.py
             source: WORKSPACE
             depends_on:
-              - task_key: baseline_model
+            - task_key: baseline_model
           job_cluster_key: training_cluster
       job_clusters:
         - job_cluster_key: training_cluster

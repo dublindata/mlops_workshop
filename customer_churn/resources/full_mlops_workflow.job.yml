@@ -34,4 +34,4 @@ resources:
         - name: model_timeout_minutes
           default: ${var.model_timeout_minutes}
         - name: model_info_table
-          default: ${var.catalog_use}.${schema_use}.model_info_table
+          default: ${var.catalog_use}.${var.schema_use}.model_info_table
