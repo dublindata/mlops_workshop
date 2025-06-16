@@ -30,7 +30,7 @@ resources:
         - name: advanced_churn_feature_table
           default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
         - name: avg_price_increase
-          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
+          default: ${var.catalog_use}.${var.schema_use}.avg_price_increase
         - name: model_timeout_minutes
           default: ${var.model_timeout_minutes}
         - name: model_info_table
