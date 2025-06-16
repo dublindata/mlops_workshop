@@ -27,16 +27,32 @@ from pyspark.sql.functions import expr
 
 # COMMAND ----------
 
+dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
+dbutils.widgets.text("schema_use", "main", label="Schema to Use")
+
+# COMMAND ----------
+
+catalog_use = dbutils.widgets.get("catalog_use")
+schema_use = dbutils.widgets.get("schema_use")
+spark.sql(f"USE {catalog_use}.{schema_use}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select current_catalog(), current_schema();
+
+# COMMAND ----------
+
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
     "bronze_table_name",
-    "main.dbdemos_mlops.advanced_churn_bronze_customers",
+    f"{catalog_use}.{schema_use}.advanced_churn_bronze_customers",
     label="Raw Bronze Table Name",
 )
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "inference_table_name",
-    "dev.koeppen_dabs_demo.advanced_churn_inference_table",
+    f"{catalog_use}.{schema_use}.advanced_churn_inference_table",
     label="Inference Table",
 )
 
@@ -44,6 +60,13 @@ dbutils.widgets.text(
 
 bronze_table_name = dbutils.widgets.get("bronze_table_name")
 inference_table_name = dbutils.widgets.get("inference_table_name")
+
+# COMMAND ----------
+
+print(f""" 
+   bronze_table_name = {bronze_table_name}
+   inference_table_name = {inference_table_name}   
+""")
 
 # COMMAND ----------
 

@@ -35,6 +35,10 @@ resources:
       queue:
         enabled: true
       parameters:
+        - name: catalog_use
+          default: ${var.catalog_use}
+        - name: schema_use
+          default: ${var.schema_use}
         - name: bronze_table_name
           default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
         - name: inference_table_name
