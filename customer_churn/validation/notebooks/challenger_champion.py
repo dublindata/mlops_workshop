@@ -150,6 +150,8 @@ if str(new_champion.model_version) != str(champion_version):
     client.set_registered_model_alias(model_name, version=champion_version, alias="prior_champion")
     client.set_model_version_tag(model_name, champion_version, "status", "demoted_to_prior_champion")
     client.set_model_version_tag(model_name, champion_version, "demoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    client.set_model_version_tag(model_name, challenger_version, "status", "promoted_to_champion")
+    client.set_model_version_tag(model_name, challenger_version, "promoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(f"Demoted v{champion_version} to prior_champion")
 
 
@@ -157,9 +159,6 @@ if str(new_champion.model_version) != str(champion_version):
 client.set_registered_model_alias(model_name, version=new_champion.model_version, alias="champion")
 client.set_registered_model_alias(model_name, version=new_challenger.model_version, alias="challenger")
 
-# Set tags
-client.set_model_version_tag(model_name, challenger_version, "status", "promoted_to_champion")
-client.set_model_version_tag(model_name, challenger_version, "promoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 # We can also tag the model version with the F1 score for visibility
 print(f"Champion: v{new_champion.model_version} (F1 = {new_champion.f1_score})")
 print(f"Challenger: v{new_challenger.model_version} (F1 = {new_challenger.f1_score})")
