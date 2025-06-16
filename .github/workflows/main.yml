@@ -1,5 +1,5 @@
 name: Deploy to Test
-run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code!
+run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code to Test!
 on:
   push:
     branches: 
@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deploy Bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_PAT: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
+          DATABRICKS_PAT: ${{ secrets.ORG_DATABRICKS_TOKEN }}
         run: cd customer_churn; databricks bundle deploy -t tst
