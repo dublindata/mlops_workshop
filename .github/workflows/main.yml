@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deploy Bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.databricks_host }}
-          DATABRICKS_PAT: ${{ secrets.databricks_pat }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_PAT: ${{ secrets.DATABRICKS_TOKEN }}
         run: cd customer_churn; databricks bundle deploy -t tst
