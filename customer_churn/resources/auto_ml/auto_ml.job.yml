@@ -10,7 +10,7 @@ resources:
           job_cluster_key: training_cluster
         - task_key: baseline_validation
           notebook_task:
-            notebook_path: ../../validataion/notebooks/validation.py
+            notebook_path: ../../validation/notebooks/validation.py
             source: WORKSPACE
             depends_on:
               - task_key: baseline_model
