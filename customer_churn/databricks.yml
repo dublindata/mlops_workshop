@@ -25,13 +25,16 @@ variables:
   validating_model_alias:
     description: The model we want to do model validation on 
     default: challenger
+  model_timeout_minutes:
+    description: The maximum number of minutes that Auto ML should run before forcing a result to return.
+    default: 15
 
 targets:
   # The 'dev' target, for development purposes. This target is the default.
   workshop_dev:
     mode: development
     presets:
-      # name_prefix: '[dev ${var.run_as_user}]' 
+      name_prefix: '[${bundle.target} ${var.run_as_user}] '  
       pipelines_development: true # set development to true for pipelines
       trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -44,13 +47,14 @@ targets:
     variables:
       catalog_use: mgiglia
       schema_use: main
+      model_timeout_minutes: 15
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
 
   dev:
     mode: development
     presets:
-      # name_prefix: '[dev ${var.run_as_user}]' 
+      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
       pipelines_development: true # set development to true for pipelines
       trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -62,6 +66,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 15
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -75,7 +80,7 @@ targets:
   tst:
     mode: production
     presets:
-      # name_prefix: '[dev ${var.run_as_user}]' 
+      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -87,6 +92,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 15
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -100,7 +106,7 @@ targets:
   uat:
     mode: production
     presets:
-      # name_prefix: '[dev ${var.run_as_user}]' 
+      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -112,6 +118,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 120
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -126,7 +133,7 @@ targets:
   prod:
     mode: production
     presets:
-      # name_prefix: '[dev ${var.run_as_user}]' 
+      name_prefix: '[${bundle.target} ${var.run_as_user}] ' # normally prefix is not set for production job names, for the MLOps Workshop, if deployment to prod is expected we need to set this so that no two students overwrite each other.  
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -138,6 +145,7 @@ targets:
     variables:
       catalog_use: datascience
       schema_use: kiara_koeppen
+      model_timeout_minutes: 120
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
