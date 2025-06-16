@@ -1,0 +1,41 @@
+new_cluster: &new_cluster
+  new_cluster:
+    num_workers: 3
+    spark_version: 15.3.x-cpu-ml-scala2.12
+    node_type_id: Standard_D3_v2
+    data_security_mode: "SINGLE_USER"
+    custom_tags:
+      clusterSource: mlops-stacks_0.4
+
+common_permissions: &permissions
+  permissions:
+    - level: CAN_VIEW
+      group_name: users
+
+resources:
+  jobs:
+    challenger_champion_alias:
+      name: challenger-champion-job
+      job_clusters:
+        - job_cluster_key: challenger_champion_cluster
+          <<: *new_cluster
+      tasks:
+        - task_key: CreateInputTable
+          job_cluster_key: challenger_champion_cluster
+          notebook_task:
+            notebook_path: ../validation/notebooks/challenger_champion.ipynb
+            base_parameters:
+              model_name: ${var.catalog_name}.${var.schema_name}.advanced_mlops_churn_model
+              model_info_table: ${var.catalog_name}.${var.schema_name}.model_info_table
+              git_source_info: url:${bundle.git.origin_url}; branch:${bundle.git.branch}; commit:${bundle.git.commit}
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?" # daily at 7am
+        timezone_id: UTC
+      <<: *permissions
+      # If you want to turn on notifications for this job, please uncomment the below code,
+      # and provide a list of emails to the on_failure argument.
+      #
+      #  email_notifications:
+      #    on_failure:
+      #      - first@company.com
+      #      - second@company.com
