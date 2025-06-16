@@ -6,5 +6,25 @@ resources:
         - task_key: data_preparation
           run_job_task:
             job_id: ${resources.jobs.data_preparation.id}
+        - task_key: auto_ml
+          run_job_task:
+            job_id: ${resources.jobs.auto_ml_baseline.id}
       queue:
         enabled: true
+      parameters:
+        - name: catalog_use
+          default: ${var.catalog_use}
+        - name: schema_use
+          default: ${var.schema_use}
+        - name: bronze_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
+        - name: inference_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_inference_table
+        - name: input_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
+        - name: advanced_churn_label_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_label_table
+        - name: advanced_churn_feature_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
+        - name: avg_price_increase
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
