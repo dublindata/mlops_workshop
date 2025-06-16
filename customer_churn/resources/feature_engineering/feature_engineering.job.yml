@@ -7,16 +7,16 @@ resources:
           notebook_task:
             notebook_path: ../../feature_engineering/notebooks/requirements.py
             source: WORKSPACE
-          job_cluster_key: customer_churn_ml_cluster
+          job_cluster_key: data_prep_cluster
         - task_key: data_preparation
           depends_on:
             - task_key: requirements
           notebook_task:
             notebook_path: ../../feature_engineering/notebooks/data_preparation.py
             source: WORKSPACE
-          job_cluster_key: customer_churn_ml_cluster
+          job_cluster_key: data_prep_cluster
       job_clusters:
-        - job_cluster_key: customer_churn_ml_cluster
+        - job_cluster_key: data_prep_cluster
           new_cluster:
             spark_version: 15.4.x-scala2.12
             aws_attributes:
@@ -46,4 +46,4 @@ resources:
         - name: advanced_churn_feature_table
           default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
         - name: avg_price_increase
-          default: mgiglia.main.advanced_churn_feature_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
