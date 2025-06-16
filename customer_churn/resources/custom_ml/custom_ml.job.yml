@@ -27,8 +27,8 @@ resources:
           new_cluster:
             spark_version: 15.4.x-scala2.12
             aws_attributes:
-              availability: ON_DEMAND
-            node_type_id: rd-fleet.xlarge
+              availability: SPOT_WITH_FALLBACK
+            node_type_id: r6id.xlarge
             spark_env_vars:
               PYSPARK_PYTHON: /databricks/python3/bin/python3
             data_security_mode: DATA_SECURITY_MODE_DEDICATED
