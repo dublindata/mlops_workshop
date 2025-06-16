@@ -5,14 +5,14 @@ resources:
       tasks:
         - task_key: requirements
           notebook_task:
-            notebook_path: ../feature_engineering/notebooks/requirements.py
+            notebook_path: ../../feature_engineering/notebooks/requirements.py
             source: WORKSPACE
           job_cluster_key: customer_churn_ml_cluster
         - task_key: data_preparation
           depends_on:
             - task_key: requirements
           notebook_task:
-            notebook_path: ../feature_engineering/notebooks/data_preparation.py
+            notebook_path: ../../feature_engineering/notebooks/data_preparation.py
             source: WORKSPACE
           job_cluster_key: customer_churn_ml_cluster
       job_clusters:
