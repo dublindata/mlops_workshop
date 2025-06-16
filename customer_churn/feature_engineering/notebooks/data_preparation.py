@@ -88,8 +88,17 @@ print(output_database)
 
 # COMMAND ----------
 
+spark.sql(f"USE CATALOG {output_catalog}")
+
+# COMMAND ----------
+
 # DBTITLE 1,Making sure that we have a schema to land our data in
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {output_database}")
+
+# COMMAND ----------
+
+spark.sql(f"USE {output_catalog}.{output_database}")
+display(spark.sql("SELECT current_catalog(), current_schema()"))
 
 # COMMAND ----------
 
