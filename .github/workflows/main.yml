@@ -1,0 +1,12 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code!
+on: [push]
+jobs:
+  Confgire-And-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Databricks Authentication
+        env:
+          DATABRICKS_HOST: ${{ secrets.databricks_host }}
+          DATABRICKS_PAT: ${{ secrets.databricks_pat }}
+        run: databricks configure --host $DATABRICKS_HOST $DATABRICKS_PAT
