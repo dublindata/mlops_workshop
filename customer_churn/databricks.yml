@@ -25,6 +25,9 @@ variables:
   validating_model_alias:
     description: The model we want to do model validation on 
     default: challenger
+  model_timeout_minutes:
+    description: The maximum number of minutes that Auto ML should run before forcing a result to return.
+    default: 15
 
 targets:
   # The 'dev' target, for development purposes. This target is the default.
@@ -44,6 +47,7 @@ targets:
     variables:
       catalog_use: mgiglia
       schema_use: main
+      model_timeout_minutes: 5
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
 
@@ -62,6 +66,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 5
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -87,6 +92,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 5
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -112,6 +118,7 @@ targets:
     variables:
       catalog_use: datascience_${bundle.target}
       schema_use: kiara_koeppen
+      model_timeout_minutes: 20
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
@@ -138,6 +145,7 @@ targets:
     variables:
       catalog_use: datascience
       schema_use: kiara_koeppen
+      model_timeout_minutes: 20
       run_as_user: matthew.giglia@databricks.com
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com

@@ -44,3 +44,5 @@ resources:
           default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
         - name: avg_price_increase
           default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
+        - name: model_timeout_minutes
+          default: ${var.model_timeout_minutes}
