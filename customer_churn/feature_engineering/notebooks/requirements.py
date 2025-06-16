@@ -131,7 +131,3 @@ def generate_synthetic(inference_table, drift_type="label_drift"):
   df_synthetic_data.write.mode("overwrite").saveAsTable(inference_table)
 
 generate_synthetic(inference_table=inference_table_name)
-
-# COMMAND ----------
-
-
