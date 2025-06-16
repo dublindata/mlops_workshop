@@ -78,7 +78,7 @@ targets:
   tst:
     mode: production
     presets:
-      name_prefix: '[${bundle.target} ${var.}] ' 
+      name_prefix: '[${bundle.target} ${var.schema_use}] ' 
       pipelines_development: false # set development to true for pipelines
       trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
