@@ -15,14 +15,12 @@ resources:
           depends_on:
             - task_key: first_run_conditional
               outcome: "true"
-          job_cluster_key: ml_cluster
 
         - task_key: auto_ml
           run_job_task:
             job_id: ${resources.jobs.auto_ml_baseline.id}
           depends_on:
             - task_key: data_preparation
-          job_cluster_key: ml_cluster
 
         - task_key: custom_ml
           run_job_task:
@@ -32,12 +30,11 @@ resources:
             - task_key: first_run_conditional
               outcome: "false"
           run_if: AT_LEAST_ONE_SUCCESS
-          job_cluster_key: ml_cluster
 
 
 
       job_clusters:
-        - job_cluster_key: ml_cluster
+        - job_cluster_key: training_cluster
           new_cluster:
             spark_version: 15.4.x-scala2.12
             aws_attributes:
