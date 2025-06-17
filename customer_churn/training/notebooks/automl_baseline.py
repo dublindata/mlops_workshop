@@ -145,6 +145,7 @@ model_name = dbutils.widgets.get("model_name")
 
 # COMMAND ----------
 
+# DBTITLE 1,Making sure we're using the parameters were expecting
 print(f""" 
   model_timeout_minutes: {model_timeout_minutes}
   advanced_churn_label_table: {advanced_churn_label_table}

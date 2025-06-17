@@ -38,22 +38,26 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
 # COMMAND ----------
 
+# DBTITLE 1,Setting the Catalog and Schema so we know where to work out of
 catalog_use = dbutils.widgets.get("catalog_use")
 schema_use = dbutils.widgets.get("schema_use")
 spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Make sure we're using the expected catalog & schema
 # MAGIC %sql
 # MAGIC select current_catalog(), current_schema();
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # MLflow experiment name.
 dbutils.widgets.text(
     "experiment_name",
