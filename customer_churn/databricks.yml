@@ -19,9 +19,9 @@ variables:
   run_as_user:
     description: Service Principal or Managed Identity in the Target that the workflows should run as.  Note that in the resources, use "${workspace.current_user.userName}" to identify this user in the workflows and pipelines.  
     default: matthew.giglia@databricks.com
-  model_name:
+  short_model_name:
     description: Model name for the model training. This model will be registered in UC in the Catalog and Schema defined above 
-    default: advanced-churn-model
+    default: advanced_mlops_churn_model
   validating_model_alias:
     description: The model we want to do model validation on 
     default: challenger
