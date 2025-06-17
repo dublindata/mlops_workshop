@@ -169,6 +169,7 @@ print(f"Challenger: v{new_challenger.model_version} (F1 = {new_challenger.f1_sco
 # MAGIC ### Congratulations, our model is now validated and promoted accordingly
 # MAGIC
 # MAGIC We now know that our model is ready to be used in inference pipelines and real-time serving endpoints, as it matches our validation standards.
-# MAGIC
-# MAGIC
-# MAGIC Next: [Run batch inference from our newly promoted Champion model]($./05_batch_inference)
+
+# COMMAND ----------
+
+
