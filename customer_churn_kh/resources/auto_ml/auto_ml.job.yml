@@ -1,0 +1,59 @@
+resources:
+  jobs:
+    auto_ml_baseline:
+      name: Auto ML - Customer Churn ML Model
+      tasks:
+        - task_key: baseline_model
+          notebook_task:
+            notebook_path: ../../training/notebooks/automl_baseline.py
+            source: WORKSPACE
+          job_cluster_key: training_cluster
+        - task_key: baseline_validation
+          notebook_task:
+            notebook_path: ../../validation/notebooks/validation.py
+            source: WORKSPACE
+          depends_on:
+            - task_key: baseline_model
+          job_cluster_key: training_cluster
+      job_clusters:
+        - job_cluster_key: training_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              availability: SPOT_WITH_FALLBACK
+            node_type_id: r6id.xlarge
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: PHOTON
+            kind: CLASSIC_PREVIEW
+            use_ml_runtime: true
+            is_single_node: false
+            autoscale:
+              min_workers: 2
+              max_workers: 8
+      queue:
+        enabled: true
+      parameters:
+        - name: catalog_use
+          default: ${var.catalog_use}
+        - name: schema_use
+          default: ${var.schema_use}
+        - name: bronze_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
+        - name: inference_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_inference_table
+        - name: input_table_name
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_bronze_customers
+        - name: advanced_churn_label_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_label_table
+        - name: advanced_churn_feature_table
+          default: ${var.catalog_use}.${var.schema_use}.advanced_churn_feature_table
+        - name: avg_price_increase
+          default: ${var.catalog_use}.${var.schema_use}.avg_price_increase
+        - name: model_timeout_minutes
+          default: ${var.model_timeout_minutes}
+        - name: model_alias
+          default: champion
+        - name: model_info_table
+          default: ${var.catalog_use}.${var.schema_use}.model_info_table

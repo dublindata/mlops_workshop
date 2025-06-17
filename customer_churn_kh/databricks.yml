@@ -1,6 +1,6 @@
 # Databricks Asset Bundle configuration, more info here: https://docs.databricks.com/en/dev-tools/bundles/settings.html
 bundle:
-  name: "customer_churn"
+  name: "customer_churn_kh"
 # Include all YAML files in resources and sub folders 
 include:
   - resources/*/*.yml
