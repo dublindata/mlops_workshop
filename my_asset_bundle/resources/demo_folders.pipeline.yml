@@ -1,0 +1,13 @@
+# The main pipeline for demo_folders
+resources:
+  pipelines:
+    demo_folders_pipeline:
+      name: demo_folders_pipeline
+      catalog: datascience
+      schema: demo_folders_${bundle.target}
+      libraries:
+        - notebook:
+            path: ../src/dlt_pipeline.ipynb
+
+      configuration:
+        bundle.sourcePath: ${workspace.file_path}/src
