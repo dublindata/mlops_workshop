@@ -1,17 +1,17 @@
-name: Deploy to Production
-run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code to Prod!
-on:
-  push:
-    branches: 
-      - prod
+# name: Deploy to Production
+# run-name: ${{ github.actor }} is deploying HCSC Data Workshop Code to Prod!
+# on:
+#   push:
+#     branches: 
+#       - prod
 
-jobs:
-  Confgire-And-Deploy:
-    runs-on: [self-hosted, databricks-cli]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy Bundle
-        env:
-          DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.ORG_DATABRICKS_TOKEN }}
-        run: cd customer_churn_kk; databricks bundle deploy -t prod
+# jobs:
+#   Confgire-And-Deploy:
+#     runs-on: [self-hosted, databricks-cli]
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Deploy Bundle
+#         env:
+#           DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ secrets.ORG_DATABRICKS_TOKEN }}
+#         run: cd customer_churn_kk; databricks bundle deploy -t prod
