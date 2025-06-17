@@ -38,6 +38,7 @@ schema_use = dbutils.widgets.get("schema_use")
 
 # COMMAND ----------
 
+# DBTITLE 1,If the Bronze Data doesn't already exist, create it from the csv
 spark.sql(f"use catalog {catalog_use}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema_use}")
 spark.sql(f"USE {catalog_use}.{schema_use}")

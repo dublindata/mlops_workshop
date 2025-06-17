@@ -1,11 +1,12 @@
 # Databricks Asset Bundle configuration, more info here: https://docs.databricks.com/en/dev-tools/bundles/settings.html
 bundle:
   name: "customer_churn"
-
+# Include all YAML files in resources and sub folders 
 include:
   - resources/*/*.yml
   - resources/*.yml
 
+# Define variables that we'll using regardless of the environment in this folder. The goal is to write the code once and deploy everywhere
 variables:
   catalog_use:
     default: datascience_dev
