@@ -1,0 +1,29 @@
+# This is a Databricks asset bundle definition for demo_folders.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: demo_folders
+  uuid: 9842fe0d-12b4-4c65-a068-e9170b9fcfcb
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com
+
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/odl_user_1766560@databrickslabs.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/odl_user_1766560@databrickslabs.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: odl_user_1766560@databrickslabs.com
+        level: CAN_MANAGE
