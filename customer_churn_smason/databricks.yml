@@ -7,7 +7,7 @@ include:
   - resources/*.yml
 
 # Define variables that we'll using regardless of the environment in this folder. The goal is to write the code once and deploy everywhere
-variables:
+variables: 
   catalog_use:
     default: datascience_dev
     description: The catalog that the machine learning models, feature store tables, inference tables, and functions will be stored in the Unity Catalog three level namepsace.  Will change based on the environment/target ['dev', 'tst', 'uat', 'prod'].  Note that for 'prd' the target/environment name will drop off the catalog.  
