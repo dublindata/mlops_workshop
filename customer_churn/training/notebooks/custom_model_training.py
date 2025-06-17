@@ -96,7 +96,11 @@ dbutils.widgets.text(
 
 # COMMAND ----------
 
-experiment_name = dbutils.widgets.get("experiment_name")
+import uuid
+
+# COMMAND ----------
+
+experiment_name = dbutils.widgets.get("experiment_name") + "_" + str(uuid.uuid4()).replace("-", "_")
 model_name = dbutils.widgets.get("model_name")
 avg_price_increase=dbutils.widgets.get("avg_price_increase")
 advanced_churn_label_table=dbutils.widgets.get("advanced_churn_label_table")
