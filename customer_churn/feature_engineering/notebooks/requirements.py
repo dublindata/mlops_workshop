@@ -40,7 +40,6 @@ schema_use = dbutils.widgets.get("schema_use")
 spark.sql(f"use catalog {catalog_use}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema_use}")
 spark.sql(f"USE {catalog_use}.{schema_use}")
-# print(output_database)
 
 # COMMAND ----------
 
@@ -98,12 +97,6 @@ if not spark.catalog.tableExists(bronze_table_name):
   df = cleanup_column(df)
   print(f"creating `{bronze_table_name}` raw table")
   spark.createDataFrame(df).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(bronze_table_name)
-
-# COMMAND ----------
-
-# output_catalog = inference_table_name.split(".")[0]
-# output_database = inference_table_name.split(".")[1]
-# spark.sql(f"USE CATALOG {output_catalog}")
 
 # COMMAND ----------
 
