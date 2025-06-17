@@ -54,6 +54,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,make sure we're using the expected catalog/schema
 # MAGIC %sql
 # MAGIC select current_catalog(), current_schema();
 
@@ -164,6 +165,7 @@ features_df = spark.table(advanced_churn_feature_table)
 
 # COMMAND ----------
 
+# DBTITLE 1,Batch scoring the validation DF to get the F1 Score
 from databricks.feature_engineering import FeatureEngineeringClient
 from mlflow.tracking import MlflowClient
 from mlflow import pyfunc
