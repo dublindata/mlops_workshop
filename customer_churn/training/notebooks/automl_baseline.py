@@ -72,12 +72,14 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 dbutils.widgets.text("model_timeout_minutes", "5", label="Model Timeout Minutes")
 
 # COMMAND ----------
 
+# DBTITLE 1,Setting the Catalog and Schema so we know where to work out of
 catalog_use = dbutils.widgets.get("catalog_use")
 schema_use = dbutils.widgets.get("schema_use")
 spark.sql(f"USE {catalog_use}.{schema_use}")
@@ -89,6 +91,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
@@ -127,6 +130,7 @@ dbutils.widgets.text(
 
 # COMMAND ----------
 
+# DBTITLE 1,Using UUID since AutoML experiment name needs to be unique
 import uuid
 
 # COMMAND ----------
