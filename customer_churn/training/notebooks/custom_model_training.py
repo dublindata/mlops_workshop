@@ -118,8 +118,8 @@ print(f"""
 # MAGIC %md
 # MAGIC # LightGBM Classifier training
 # MAGIC - This is an auto-generated notebook.
-# MAGIC - To reproduce these results, attach this notebook to a cluster with runtime version **14.3.x-cpu-ml-scala2.12**, and rerun it.
-# MAGIC - Compare trials in the [MLflow experiment](#mlflow/experiments/xxx).
+# MAGIC - To reproduce these results, attach this notebook to a cluster with runtime version **15.4.x-cpu-ml-scala2.12**, and rerun it.
+# MAGIC - Compare trials in the MLflow experiment
 # MAGIC - Clone this notebook into your project folder by selecting **File > Clone** in the notebook toolbar.
 
 # COMMAND ----------
@@ -142,7 +142,7 @@ mlflow.set_registry_uri('databricks-uc')
 # MAGIC
 # MAGIC We'll also use specific feature functions for on-demand features.
 # MAGIC
-# MAGIC Recall that we have defined the `avg_price_increase` feature function in the [feature engineering notebook]($./01_feature_engineering)
+# MAGIC Recall that we have defined the `avg_price_increase` feature function
 
 # COMMAND ----------
 
@@ -245,10 +245,10 @@ col_selector = ColumnSelector(supported_cols)
 
 # MAGIC %md
 # MAGIC ## Train - Validation - Test Split
-# MAGIC Split the training data into 3 sets:
-# MAGIC - Train (60% of the dataset used to train the model)
+# MAGIC Split the training data into 3 sets based on the labels in Data Preparation:
+# MAGIC - Train (70% of the dataset used to train the model)
 # MAGIC - Validation (20% of the dataset used to tune the hyperparameters of the model)
-# MAGIC - Test (20% of the dataset used to report the true performance of the model on an unseen dataset)
+# MAGIC - Test (10% of the dataset used to report the true performance of the model on an unseen dataset)
 # MAGIC
 
 # COMMAND ----------
@@ -273,7 +273,7 @@ y_test = test_df["churn"]
 # MAGIC %md
 # MAGIC ## Train classification model
 # MAGIC - Log relevant metrics to MLflow to track runs
-# MAGIC - All the runs are logged under [this MLflow experiment](#mlflow/experiments/3340404146807314) _(may be broken link)_
+# MAGIC - All the runs are logged under this MLflow experiment
 # MAGIC - Change the model parameters and re-run the training cell to log a different trial to the MLflow experiment
 # MAGIC - To view the full list of tunable hyperparameters, check the output of the cell below
 
@@ -297,11 +297,6 @@ help(LGBMClassifier)
 
 from mlflow.models.signature import infer_signature
 infer_signature(X_train,y_train)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC autolog 
 
 # COMMAND ----------
 
@@ -550,7 +545,7 @@ client.set_model_version_tag(
     name=model_name,
     version=registration.version,
     key="model_type",
-    value=type(model).__name__  # e.g., RandomForestClassifier
+    value=type(model).__name__  # e.g., LightGBM Model
 )
 
 client.set_model_version_tag(
