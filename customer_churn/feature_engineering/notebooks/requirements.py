@@ -27,6 +27,7 @@ from pyspark.sql.functions import expr
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
@@ -37,10 +38,10 @@ schema_use = dbutils.widgets.get("schema_use")
 
 # COMMAND ----------
 
+# DBTITLE 1,If the Bronze Data doesn't already exist, create it from the csv
 spark.sql(f"use catalog {catalog_use}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema_use}")
 spark.sql(f"USE {catalog_use}.{schema_use}")
-# print(output_database)
 
 # COMMAND ----------
 
@@ -49,6 +50,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
     "bronze_table_name",
@@ -64,6 +66,7 @@ dbutils.widgets.text(
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 bronze_table_name = dbutils.widgets.get("bronze_table_name")
 inference_table_name = dbutils.widgets.get("inference_table_name")
 
@@ -98,12 +101,6 @@ if not spark.catalog.tableExists(bronze_table_name):
   df = cleanup_column(df)
   print(f"creating `{bronze_table_name}` raw table")
   spark.createDataFrame(df).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(bronze_table_name)
-
-# COMMAND ----------
-
-# output_catalog = inference_table_name.split(".")[0]
-# output_database = inference_table_name.split(".")[1]
-# spark.sql(f"USE CATALOG {output_catalog}")
 
 # COMMAND ----------
 

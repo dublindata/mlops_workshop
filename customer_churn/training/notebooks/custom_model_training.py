@@ -38,22 +38,26 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
 # COMMAND ----------
 
+# DBTITLE 1,Setting the Catalog and Schema so we know where to work out of
 catalog_use = dbutils.widgets.get("catalog_use")
 schema_use = dbutils.widgets.get("schema_use")
 spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Make sure we're using the expected catalog & schema
 # MAGIC %sql
 # MAGIC select current_catalog(), current_schema();
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # MLflow experiment name.
 dbutils.widgets.text(
     "experiment_name",
@@ -101,13 +105,6 @@ label_col="churn"
 
 # COMMAND ----------
 
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
-
-# COMMAND ----------
-
 print(f""" 
   advanced_churn_label_table: {advanced_churn_label_table}
   advanced_churn_feature_table: {advanced_churn_feature_table}
@@ -121,8 +118,8 @@ print(f"""
 # MAGIC %md
 # MAGIC # LightGBM Classifier training
 # MAGIC - This is an auto-generated notebook.
-# MAGIC - To reproduce these results, attach this notebook to a cluster with runtime version **14.3.x-cpu-ml-scala2.12**, and rerun it.
-# MAGIC - Compare trials in the [MLflow experiment](#mlflow/experiments/xxx).
+# MAGIC - To reproduce these results, attach this notebook to a cluster with runtime version **15.4.x-cpu-ml-scala2.12**, and rerun it.
+# MAGIC - Compare trials in the MLflow experiment
 # MAGIC - Clone this notebook into your project folder by selecting **File > Clone** in the notebook toolbar.
 
 # COMMAND ----------
@@ -145,7 +142,7 @@ mlflow.set_registry_uri('databricks-uc')
 # MAGIC
 # MAGIC We'll also use specific feature functions for on-demand features.
 # MAGIC
-# MAGIC Recall that we have defined the `avg_price_increase` feature function in the [feature engineering notebook]($./01_feature_engineering)
+# MAGIC Recall that we have defined the `avg_price_increase` feature function
 
 # COMMAND ----------
 
@@ -248,10 +245,10 @@ col_selector = ColumnSelector(supported_cols)
 
 # MAGIC %md
 # MAGIC ## Train - Validation - Test Split
-# MAGIC Split the training data into 3 sets:
-# MAGIC - Train (60% of the dataset used to train the model)
+# MAGIC Split the training data into 3 sets based on the labels in Data Preparation:
+# MAGIC - Train (70% of the dataset used to train the model)
 # MAGIC - Validation (20% of the dataset used to tune the hyperparameters of the model)
-# MAGIC - Test (20% of the dataset used to report the true performance of the model on an unseen dataset)
+# MAGIC - Test (10% of the dataset used to report the true performance of the model on an unseen dataset)
 # MAGIC
 
 # COMMAND ----------
@@ -276,7 +273,7 @@ y_test = test_df["churn"]
 # MAGIC %md
 # MAGIC ## Train classification model
 # MAGIC - Log relevant metrics to MLflow to track runs
-# MAGIC - All the runs are logged under [this MLflow experiment](#mlflow/experiments/3340404146807314) _(may be broken link)_
+# MAGIC - All the runs are logged under this MLflow experiment
 # MAGIC - Change the model parameters and re-run the training cell to log a different trial to the MLflow experiment
 # MAGIC - To view the full list of tunable hyperparameters, check the output of the cell below
 
@@ -300,11 +297,6 @@ help(LGBMClassifier)
 
 from mlflow.models.signature import infer_signature
 infer_signature(X_train,y_train)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC autolog 
 
 # COMMAND ----------
 
@@ -452,27 +444,8 @@ def objective(params):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC # Run First with 1 eval (not as good)
-# MAGIC space = {
-# MAGIC   "colsample_bytree": 0.4120544919020157,
-# MAGIC   "lambda_l1": 2.6616074270114995,
-# MAGIC   "lambda_l2": 514.9224373768443,
-# MAGIC   "learning_rate": 0.0778497372371143,
-# MAGIC   "max_bin": 229,
-# MAGIC   "max_depth": 9,
-# MAGIC   "min_child_samples": 66,
-# MAGIC   "n_estimators": 250,
-# MAGIC   "num_leaves": 100,
-# MAGIC   "path_smooth": 61.06596877554017,
-# MAGIC   "subsample": 0.6965257092078714,
-# MAGIC   "random_state": 42,
-# MAGIC }
-
-# COMMAND ----------
-
-# Run second with maybe 2 evals
-# Run third with maybe 5 evals
+# Run with maybe 2 evals
+# Run with maybe 5 evals if wanting more examples
 space = {
     "colsample_bytree": hp.uniform("colsample_bytree", 0.3, 1.0),
     "lambda_l1": hp.loguniform("lambda_l1", -2, 3),  # ~0.1 to ~20
@@ -510,7 +483,7 @@ trials = Trials()
 fmin(objective,
      space=space,
      algo=tpe.suggest,
-     max_evals= 5, # Increase this when widening the hyperparameter search space.
+     max_evals= 2, # Increase this when widening the hyperparameter search space.
      trials=trials)
 
 best_result = trials.best_trial["result"]
@@ -572,7 +545,7 @@ client.set_model_version_tag(
     name=model_name,
     version=registration.version,
     key="model_type",
-    value=type(model).__name__  # e.g., RandomForestClassifier
+    value=type(model).__name__  # e.g., LightGBM Model
 )
 
 client.set_model_version_tag(
@@ -698,7 +671,3 @@ display(Image(filename=eval_pr_curve_path))
 # MAGIC ### Automate model promotion validation
 # MAGIC
 # MAGIC Next step: [Search runs and trigger model promotion validation]($./03_from_notebook_to_models_in_uc)
-
-# COMMAND ----------
-
-

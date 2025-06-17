@@ -72,12 +72,14 @@ notebook_path =  '/Workspace/' + os.path.dirname(dbutils.notebook.entry_point.ge
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 dbutils.widgets.text("model_timeout_minutes", "5", label="Model Timeout Minutes")
 
 # COMMAND ----------
 
+# DBTITLE 1,Setting the Catalog and Schema so we know where to work out of
 catalog_use = dbutils.widgets.get("catalog_use")
 schema_use = dbutils.widgets.get("schema_use")
 spark.sql(f"USE {catalog_use}.{schema_use}")
@@ -89,10 +91,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
-# dbutils.widgets.removeAll()
-
-# COMMAND ----------
-
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # Feature table to store the computed features.
 dbutils.widgets.text(
     "advanced_churn_label_table",
@@ -128,15 +127,10 @@ dbutils.widgets.text(
     label="Model Name",
 )
 
-# # Feature table to store the computed features.
-# dbutils.widgets.text(
-#     "features_from_registered_automl_model",
-#     "dev.koeppen_dabs_demo.features_from_registered_automl_model",
-#     label="features_from_registered_automl_model",
-# )
 
 # COMMAND ----------
 
+# DBTITLE 1,Using UUID since AutoML experiment name needs to be unique
 import uuid
 
 # COMMAND ----------
@@ -151,6 +145,7 @@ model_name = dbutils.widgets.get("model_name")
 
 # COMMAND ----------
 
+# DBTITLE 1,Making sure we're using the parameters were expecting
 print(f""" 
   model_timeout_minutes: {model_timeout_minutes}
   advanced_churn_label_table: {advanced_churn_label_table}
@@ -159,13 +154,6 @@ print(f"""
   experiment_name: {experiment_name}
   model_name: {model_name}
 """)
-
-# COMMAND ----------
-
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
 
 # COMMAND ----------
 
@@ -203,7 +191,7 @@ feature_lookups = [
     )
 ]
 
-# Step 1: Read features
+# Read features
 from databricks.feature_engineering import FeatureEngineeringClient
 fe = FeatureEngineeringClient()
 
@@ -266,37 +254,6 @@ print("Model version:", registration.version)
 print("Run ID:", registration.run_id)
 version=registration.version
 run_id=registration.run_id
-
-# COMMAND ----------
-
-# DBTITLE 1,Register the model in UC's Model Registry
-# MAGIC %md
-# MAGIC from mlflow import register_model
-# MAGIC from mlflow.tracking import MlflowClient
-# MAGIC
-# MAGIC client = MlflowClient()
-# MAGIC
-# MAGIC fe = FeatureEngineeringClient()
-# MAGIC fe.log_model(
-# MAGIC     model=best_model_uri,
-# MAGIC     artifact_path="automl_model",
-# MAGIC     flavor=mlflow.pyfunc,
-# MAGIC     training_set=training_df,
-# MAGIC     name=model_name,
-# MAGIC     input_example=training_df.limit(5).toPandas(),
-# MAGIC     description="AutoML model with feature lineage"
-# MAGIC )
-# MAGIC
-# MAGIC
-# MAGIC
-# MAGIC versions = client.search_model_versions(f"run_id='{best_run_id}' and name='{model_name}'")
-# MAGIC model_version_details = client.get_model_version(name=model_name, version=versions)
-# MAGIC
-# MAGIC run_id=model_version_details.run_id
-# MAGIC
-# MAGIC print("Model version:", versions)
-# MAGIC print("Run ID:", run_id)
-# MAGIC
 
 # COMMAND ----------
 

@@ -29,6 +29,7 @@ import pyspark.sql.functions as F
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
@@ -45,6 +46,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
     "input_table_name",
@@ -90,10 +92,6 @@ avg_price_increase = dbutils.widgets.get("avg_price_increase")
 assert input_table_name != "", "input_table_path notebook parameter must be specified"
 assert advanced_churn_feature_table != "", "output_table_name notebook parameter must be specified"
 
-# Extract database name. Needs to be updated for Unity Catalog to the Schema name.
-# output_catalog = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-
 # COMMAND ----------
 
 print(f""" 
@@ -102,28 +100,6 @@ print(f"""
   advanced_churn_feature_table = {advanced_churn_feature_table}
   avg_price_increase = {avg_price_increase}
 """)
-
-# COMMAND ----------
-
-# print(output_catalog)
-
-# COMMAND ----------
-
-# print(output_database)
-
-# COMMAND ----------
-
-# spark.sql(f"USE CATALOG {output_catalog}")
-
-# COMMAND ----------
-
-# DBTITLE 1,Making sure that we have a schema to land our data in
-# spark.sql(f"CREATE SCHEMA IF NOT EXISTS {output_database}")
-
-# COMMAND ----------
-
-# spark.sql(f"USE {output_catalog}.{output_database}")
-# display(spark.sql("SELECT current_catalog(), current_schema()"))
 
 # COMMAND ----------
 

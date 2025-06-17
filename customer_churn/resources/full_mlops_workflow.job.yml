@@ -77,3 +77,5 @@ resources:
           default: ${var.catalog_use}.${var.schema_use}.model_info_table
         - name: first_run
           default: false
+        - name: short_model_name 
+          default: ${var.model_name}

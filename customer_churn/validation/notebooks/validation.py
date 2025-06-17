@@ -42,6 +42,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
@@ -53,11 +54,13 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,make sure we're using the expected catalog/schema
 # MAGIC %sql
 # MAGIC select current_catalog(), current_schema();
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # MLflow experiment name.
 dbutils.widgets.text(
     "experiment_name",
@@ -121,13 +124,7 @@ model_info_table=dbutils.widgets.get("model_info_table")
 
 # COMMAND ----------
 
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
-
-# COMMAND ----------
-
+# DBTITLE 1,Making sure we're using the parameters we're expecting
 print(f""" 
   advanced_churn_label_table: {advanced_churn_label_table}
   advanced_churn_feature_table: {advanced_churn_feature_table}
@@ -168,6 +165,7 @@ features_df = spark.table(advanced_churn_feature_table)
 
 # COMMAND ----------
 
+# DBTITLE 1,Batch scoring the validation DF to get the F1 Score
 from databricks.feature_engineering import FeatureEngineeringClient
 from mlflow.tracking import MlflowClient
 from mlflow import pyfunc
@@ -241,8 +239,4 @@ df_spark = spark.createDataFrame([(
   modeling_method,
   datetime.now()
 )], ["model_name", "model_version", "f1_score","model_alias","modeling_method","validation_timestamp"]).write.mode("append").saveAsTable(model_info_table)
-
-
-# COMMAND ----------
-
 
