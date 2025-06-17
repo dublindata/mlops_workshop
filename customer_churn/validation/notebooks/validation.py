@@ -240,7 +240,3 @@ df_spark = spark.createDataFrame([(
   datetime.now()
 )], ["model_name", "model_version", "f1_score","model_alias","modeling_method","validation_timestamp"]).write.mode("append").saveAsTable(model_info_table)
 
-
-# COMMAND ----------
-
-
