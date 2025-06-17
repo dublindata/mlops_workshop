@@ -101,13 +101,6 @@ label_col="churn"
 
 # COMMAND ----------
 
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
-
-# COMMAND ----------
-
 print(f""" 
   advanced_churn_label_table: {advanced_churn_label_table}
   advanced_churn_feature_table: {advanced_churn_feature_table}
@@ -452,27 +445,8 @@ def objective(params):
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC # Run First with 1 eval (not as good)
-# MAGIC space = {
-# MAGIC   "colsample_bytree": 0.4120544919020157,
-# MAGIC   "lambda_l1": 2.6616074270114995,
-# MAGIC   "lambda_l2": 514.9224373768443,
-# MAGIC   "learning_rate": 0.0778497372371143,
-# MAGIC   "max_bin": 229,
-# MAGIC   "max_depth": 9,
-# MAGIC   "min_child_samples": 66,
-# MAGIC   "n_estimators": 250,
-# MAGIC   "num_leaves": 100,
-# MAGIC   "path_smooth": 61.06596877554017,
-# MAGIC   "subsample": 0.6965257092078714,
-# MAGIC   "random_state": 42,
-# MAGIC }
-
-# COMMAND ----------
-
-# Run second with maybe 2 evals
-# Run third with maybe 5 evals
+# Run with maybe 2 evals
+# Run with maybe 5 evals if wanting more examples
 space = {
     "colsample_bytree": hp.uniform("colsample_bytree", 0.3, 1.0),
     "lambda_l1": hp.loguniform("lambda_l1", -2, 3),  # ~0.1 to ~20
@@ -510,7 +484,7 @@ trials = Trials()
 fmin(objective,
      space=space,
      algo=tpe.suggest,
-     max_evals= 5, # Increase this when widening the hyperparameter search space.
+     max_evals= 2, # Increase this when widening the hyperparameter search space.
      trials=trials)
 
 best_result = trials.best_trial["result"]
@@ -698,7 +672,3 @@ display(Image(filename=eval_pr_curve_path))
 # MAGIC ### Automate model promotion validation
 # MAGIC
 # MAGIC Next step: [Search runs and trigger model promotion validation]($./03_from_notebook_to_models_in_uc)
-
-# COMMAND ----------
-
-
