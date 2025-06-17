@@ -42,6 +42,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
@@ -58,6 +59,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # MLflow experiment name.
 dbutils.widgets.text(
     "experiment_name",
@@ -121,13 +123,7 @@ model_info_table=dbutils.widgets.get("model_info_table")
 
 # COMMAND ----------
 
-# output_schema = advanced_churn_feature_table.split(".")[0]
-# output_database = advanced_churn_feature_table.split(".")[1]
-# spark.sql(f"USE CATALOG {output_schema}");
-# spark.sql(f"USE SCHEMA {output_database}")
-
-# COMMAND ----------
-
+# DBTITLE 1,Making sure we're using the parameters we're expecting
 print(f""" 
   advanced_churn_label_table: {advanced_churn_label_table}
   advanced_churn_feature_table: {advanced_churn_feature_table}

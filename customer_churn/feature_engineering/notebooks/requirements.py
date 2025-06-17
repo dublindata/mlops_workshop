@@ -27,6 +27,7 @@ from pyspark.sql.functions import expr
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 dbutils.widgets.text("catalog_use", "datascience_dev", label="Catalog to Use")
 dbutils.widgets.text("schema_use", "main", label="Schema to Use")
 
@@ -48,6 +49,7 @@ spark.sql(f"USE {catalog_use}.{schema_use}")
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 # A Hive-registered Delta table containing the input data.
 dbutils.widgets.text(
     "bronze_table_name",
@@ -63,6 +65,7 @@ dbutils.widgets.text(
 
 # COMMAND ----------
 
+# DBTITLE 1,Defining parameters we're going to set in YAML file
 bronze_table_name = dbutils.widgets.get("bronze_table_name")
 inference_table_name = dbutils.widgets.get("inference_table_name")
 
