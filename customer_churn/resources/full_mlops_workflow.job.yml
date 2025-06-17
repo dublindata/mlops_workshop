@@ -78,4 +78,4 @@ resources:
         - name: first_run
           default: false
         - name: short_model_name 
-          default: ${var.model_name}
+          default: ${var.short_model_name}
