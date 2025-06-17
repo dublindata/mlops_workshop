@@ -14,4 +14,4 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.ORG_DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.ORG_DATABRICKS_TOKEN }}
-        run: cd customer_churn; databricks bundle deploy -t tst
+        run: cd customer_churn_lji; databricks bundle deploy -t tst
