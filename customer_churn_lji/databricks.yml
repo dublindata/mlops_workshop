@@ -1,0 +1,166 @@
+# Databricks Asset Bundle configuration, more info here: https://docs.databricks.com/en/dev-tools/bundles/settings.html
+bundle:
+  name: "customer_churn_lji"
+# Include all YAML files in resources and sub folders 
+include:
+  - resources/*/*.yml
+  - resources/*.yml
+
+# Define variables that we'll using regardless of the environment in this folder. The goal is to write the code once and deploy everywhere
+variables:
+  catalog_use:
+    default: datascience_dev
+    description: The catalog that the machine learning models, feature store tables, inference tables, and functions will be stored in the Unity Catalog three level namepsace.  Will change based on the environment/target ['dev', 'tst', 'uat', 'prod'].  Note that for 'prd' the target/environment name will drop off the catalog.  
+  schema_use: 
+    default: main
+    description: The schema inside the catalog that the machine learning models, feature store tables, inference tables, functions, etc. will be stored in the Unity Catalog three level namespace.  
+  experiment_name:
+    description: Experiment name for the model training.
+    default: advanced-churn-experiment
+  run_as_user:
+    description: Service Principal or Managed Identity in the Target that the workflows should run as.  Note that in the resources, use "${workspace.current_user.userName}" to identify this user in the workflows and pipelines.  
+    default: matthew.giglia@databricks.com
+  short_model_name:
+    description: Model name for the model training. This model will be registered in UC in the Catalog and Schema defined above 
+    default: advanced_mlops_churn_model
+  validating_model_alias:
+    description: The model we want to do model validation on 
+    default: challenger
+  model_timeout_minutes:
+    description: The maximum number of minutes that Auto ML should run before forcing a result to return.
+    default: 15
+
+targets:
+  # The 'dev' target, for development purposes. This target is the default.
+  workshop_dev:
+    mode: development
+    presets:
+      name_prefix: '[${bundle.target} ${var.run_as_user}] '  
+      pipelines_development: true # set development to true for pipelines
+      trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: kiara_koeppen
+        removeAfter: 20251231
+    default: true
+    variables:
+      catalog_use: mgiglia
+      schema_use: main
+      model_timeout_minutes: 15
+    workspace:
+      host: https://e2-demo-field-eng.cloud.databricks.com
+
+  dev:
+    mode: development
+    presets:
+      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
+      pipelines_development: true # set development to true for pipelines
+      trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: lingling_ji
+        removeAfter: 20251231
+    variables:
+      catalog_use: datascience_${bundle.target}
+      schema_use: odl_user_1766558
+      model_timeout_minutes: 15
+      run_as_user: odl_user_1766558@databrickslabs.com
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
+      root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ${var.run_as_user}
+
+  tst:
+    mode: production
+    presets:
+      name_prefix: '[${bundle.target} ${var.schema_use}] ' 
+      pipelines_development: false # set development to true for pipelines
+      trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: lingling_ji
+        removeAfter: 20251231
+    variables:
+      catalog_use: datascience_${bundle.target}
+      schema_use: odl_user_1766558
+      model_timeout_minutes: 15
+      run_as_user: odl_user_1766558@databrickslabs.com
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
+      root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
+
+  uat:
+    mode: production
+    presets:
+      name_prefix: '[${bundle.target} ${var.schema_use}] ' 
+      pipelines_development: false # set development to true for pipelines
+      trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: lingling_ji
+        removeAfter: 20251231
+    variables:
+      catalog_use: datascience_${bundle.target}
+      schema_use: odl_user_1766558
+      model_timeout_minutes: 120
+      run_as_user: odl_user_1766558@databrickslabs.com
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
+      root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
+
+  # The 'prod' target, used for production deployment.
+  prod:
+    mode: production
+    presets:
+      name_prefix: '[${bundle.target} ${var.schema_use}] ' # normally prefix is not set for production job names, for the MLOps Workshop, if deployment to prod is expected we need to set this so that no two students overwrite each other.  
+      pipelines_development: false # set development to true for pipelines
+      trigger_pause_status: UNPAUSED # set pause_status to PAUSED for all triggers and schedules
+      jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
+      source_linked_deployment: false # default is true normally for development
+      tags:
+        mlops_workshop: true
+        dev: lingling_ji
+        removeAfter: 20251231
+    variables:
+      catalog_use: datascience
+      schema_use: odl_user_1766558
+      model_timeout_minutes: 120
+      run_as_user: odl_user_1766558@databrickslabs.com
+    workspace:
+      host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
+      root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
+      user_name: ${var.run_as_user}
+    permissions:
+      - user_name: ${var.run_as_user}
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_VIEW
+
