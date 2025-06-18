@@ -230,7 +230,7 @@ else:
 from pyspark.sql import SparkSession
 from datetime import datetime
 
-spark = SparkSession.builder.getOrCreate()
+# spark = SparkSession.builder.getOrCreate()
 df_spark = spark.createDataFrame([(
   model_name,
   model_version,

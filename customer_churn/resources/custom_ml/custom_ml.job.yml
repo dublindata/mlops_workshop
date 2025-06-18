@@ -8,6 +8,7 @@ resources:
             notebook_path: ../../training/notebooks/custom_model_training.py
             source: WORKSPACE
           job_cluster_key: training_cluster
+
         - task_key: validation
           notebook_task:
             notebook_path: ../../validation/notebooks/validation.py
@@ -15,13 +16,14 @@ resources:
           depends_on:
             - task_key: train_model
           job_cluster_key: training_cluster
+
         - task_key: challenger_champion
           notebook_task:
             notebook_path: ../../validation/notebooks/challenger_champion.py
             source: WORKSPACE
           depends_on:
             - task_key: validation
-          job_cluster_key: training_cluster
+
       job_clusters:
         - job_cluster_key: training_cluster
           new_cluster:
@@ -39,8 +41,10 @@ resources:
             autoscale:
               min_workers: 2
               max_workers: 8
+
       queue:
         enabled: true
+
       parameters:
         - name: catalog_use
           default: ${var.catalog_use}

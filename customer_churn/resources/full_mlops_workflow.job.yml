@@ -41,6 +41,12 @@ resources:
               outcome: "false"
           run_if: AT_LEAST_ONE_SUCCESS
 
+        - task_key: new_champion_condiditional
+          condition_task:
+            op: EQUAL_TO
+            left: "{{tasks.custom_ml.values.new_champion}}"
+            right: "true"
+
 
 
       # job_clusters:
