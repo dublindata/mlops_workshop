@@ -22,6 +22,13 @@ resources:
           depends_on:
             - task_key: data_preparation
 
+        - task_key: mosaic_model_serving_init
+          notebook_task:
+            notebook_path: ../../deployment/model_deployment/mosaic_model_serving.ipyng
+            source: WORKSPACE
+          depends_on:
+            - task_key: auto_ml
+
         - task_key: custom_ml
           run_job_task:
             job_id: ${resources.jobs.custom_ml.id}
