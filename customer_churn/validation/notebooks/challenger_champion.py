@@ -79,7 +79,6 @@ dbutils.widgets.text(
     label="model_info_table",
 )
 
-
 # COMMAND ----------
 
 model_info_table = dbutils.widgets.get("model_info_table")
@@ -153,6 +152,9 @@ if str(new_champion.model_version) != str(champion_version):
     client.set_model_version_tag(model_name, challenger_version, "status", "promoted_to_champion")
     client.set_model_version_tag(model_name, challenger_version, "promoted_on", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(f"Demoted v{champion_version} to prior_champion")
+    dbutils.jobs.taskValues.set("new_champion", "true")
+else:
+    dbutils.jobs.taskValues.set("new_champion", "false")
 
 
 # Reassign
