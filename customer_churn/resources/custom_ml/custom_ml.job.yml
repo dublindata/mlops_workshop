@@ -34,7 +34,7 @@ resources:
               
         - task_key: update_mms_endpoint 
           notebook_task:
-            notebook_path: ../deployment/model_deployment/mosaic_model_serving.ipynb
+            notebook_path: ../../deployment/model_deployment/mosaic_model_serving.ipynb
             source: WORKSPACE
             base_parameters:
               endpoint_name: ${var.endpoint_name}
