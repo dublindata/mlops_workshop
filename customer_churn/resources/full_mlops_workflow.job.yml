@@ -24,7 +24,7 @@ resources:
 
         - task_key: mosaic_model_serving_init
           notebook_task:
-            notebook_path: ../../deployment/model_deployment/mosaic_model_serving.ipynb
+            notebook_path: ../deployment/model_deployment/mosaic_model_serving.ipynb
             source: WORKSPACE
           depends_on:
             - task_key: auto_ml
