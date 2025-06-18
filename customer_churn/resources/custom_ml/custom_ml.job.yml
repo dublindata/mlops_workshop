@@ -23,6 +23,26 @@ resources:
             source: WORKSPACE
           depends_on:
             - task_key: validation
+              
+        - task_key: new_champion_conditional
+          condition_task:
+            op: EQUAL_TO
+            left: "{{tasks.custom_ml.values.new_champion}}"
+            right: "true"
+          depends_on: 
+            - task_key: challenger_champion
+              
+        - task_key: update_mms_endpoint 
+          notebook_task:
+            notebook_path: ../deployment/model_deployment/mosaic_model_serving.ipynb
+            source: WORKSPACE
+            base_parameters:
+              endpoint_name: ${var.endpoint_name}
+              short_model_name: ${var.short_model_name}
+          depends_on:
+            - task_key: new_champion_conditional
+              outcome: "true"
+          
 
       job_clusters:
         - job_cluster_key: training_cluster
