@@ -26,6 +26,9 @@ resources:
           notebook_task:
             notebook_path: ../deployment/model_deployment/mosaic_model_serving.ipynb
             source: WORKSPACE
+            base_parameters:
+              endpoint_name: ${var.endpoint_name}
+              short_model_name: ${var.short_model_name}
           depends_on:
             - task_key: auto_ml
 
@@ -84,5 +87,8 @@ resources:
           default: ${var.catalog_use}.${var.schema_use}.model_info_table
         - name: first_run
           default: false
-        - name: short_model_name 
-          default: ${var.short_model_name}
+
+
+
+
+

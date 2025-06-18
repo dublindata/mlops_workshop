@@ -29,13 +29,16 @@ variables:
   model_timeout_minutes:
     description: The maximum number of minutes that Auto ML should run before forcing a result to return.
     default: 15
+  endpoint_name:
+    description: The name of the mosaic model serving endpoint that should be set up as part of the model deployment.   
+    default: ${var.short_model_name}
 
 targets:
   # The 'dev' target, for development purposes. This target is the default.
   workshop_dev:
     mode: development
     presets:
-      name_prefix: '[${bundle.target} ${var.run_as_user}] '  
+      name_prefix: '[${bundle.target} ${workspace.current_user.userName}] '  
       pipelines_development: true # set development to true for pipelines
       trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -55,7 +58,7 @@ targets:
   dev:
     mode: development
     presets:
-      name_prefix: '[${bundle.target} ${var.run_as_user}] ' 
+      name_prefix: '[${bundle.target} ${var.schema_use}] ' 
       pipelines_development: true # set development to true for pipelines
       trigger_pause_status: PAUSED # set pause_status to PAUSED for all triggers and schedules
       jobs_max_concurrent_runs: 1 # set max_concurrent runs to 1 for all jobs
@@ -68,6 +71,7 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: odl_instructor_1452233
       model_timeout_minutes: 15
+      endpoint_name: ${bundle.target}_${var.schema_use}_customer_churn_endpoint
       run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
@@ -92,10 +96,13 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: odl_instructor_1452233
       model_timeout_minutes: 15
-      run_as_user: odl_instructor_1766475@databrickslabs.com
+      endpoint_name: ${bundle.target}_${var.schema_use}_customer_churn_endpoint
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    git:
+      branch: main
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
@@ -121,10 +128,13 @@ targets:
       catalog_use: datascience_${bundle.target}
       schema_use: odl_instructor_1452233
       model_timeout_minutes: 120
-      run_as_user: odl_instructor_1766475@databrickslabs.com
+      endpoint_name: ${bundle.target}_${var.schema_use}_customer_churn_endpoint
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    git:
+      branch: uat
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
@@ -151,10 +161,13 @@ targets:
       catalog_use: datascience
       schema_use: odl_instructor_1452233
       model_timeout_minutes: 120
-      run_as_user: odl_instructor_1766475@databrickslabs.com
+      endpoint_name: ${bundle.target}_${var.schema_use}_customer_churn_endpoint
+      run_as_user: odl_instructor_1452233@databrickslabs.com
     workspace:
       host: https://dbc-08c9eac2-f2a7.cloud.databricks.com/
       root_path: /Users/${var.run_as_user}/.bundle/${bundle.name}/${bundle.target}
+    git:
+      branch: prod
     run_as:
       # see https://docs.databricks.com/dev-tools/bundles/permissions.html.
       user_name: ${var.run_as_user}
